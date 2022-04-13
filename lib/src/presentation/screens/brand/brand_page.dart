@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
 import 'package:healthcare/src/presentation/screens/brand/page_view.dart';
-import 'package:healthcare/src/presentation/screens/login_screen.dart';
+import 'package:healthcare/src/presentation/screens/login_screen/login_screen.dart';
 
 class BrandPage extends StatefulWidget {
   const BrandPage({
@@ -19,17 +19,17 @@ class _BrandPageState extends State<BrandPage> {
     const BodyPageView(
       picturePath: 'assets/images/image_brand_01.png',
       title: 'We are ready for your health care',
-      description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     ),
     const BodyPageView(
       picturePath: 'assets/images/image_brand_02.png',
       title: 'Organized teamwork',
-      description: 'bbbbbbbbbbbbb',
+      description: 'bbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     ),
     const BodyPageView(
       picturePath: 'assets/images/image_brand_03.png',
       title: 'Ready to take your call',
-      description: 'ccccccccccccccccccccc',
+      description: 'cccccccccccccccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     ),
   ];
   final PageController _pageController = PageController();
@@ -56,7 +56,7 @@ class _BrandPageState extends State<BrandPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 620,
+                height: 540,
                 child: PageView(
                   controller: _pageController,
                   children: bodyPageView,
@@ -66,7 +66,7 @@ class _BrandPageState extends State<BrandPage> {
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: 30,
                 child: DotsIndicator(
                   dotsCount: bodyPageView.length,
                   mainAxisSize: MainAxisSize.max,

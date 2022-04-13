@@ -21,7 +21,7 @@ class BodyPageView extends StatelessWidget {
       children: [
         Image.asset(
           picturePath,
-          height: 450,
+          height: 350,
         ),
         const SizedBox(height: 10),
         Text(
@@ -29,9 +29,12 @@ class BodyPageView extends StatelessWidget {
           style: AppStyle().heading2.copyWith(fontSize: 17),
         ),
         const SizedBox(height: 20),
-        Text(
-          description,
-          style: AppStyle().heading4,
+        Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Text(
+            description,
+            style: AppStyle().heading4,
+          ),
         ),
         const SizedBox(height: 10),
       ],

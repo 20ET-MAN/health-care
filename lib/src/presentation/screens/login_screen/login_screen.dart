@@ -6,6 +6,8 @@ import 'package:healthcare/src/presentation/widget/app_icon_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_next_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_text_field.dart';
 
+import '../register/register_first.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -18,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           width: double.infinity,
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -44,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                     src: 'assets/icon/ic_facebook.svg',
                     color: AppColor.colorBlackBlue,
                     heightSrc: 30,
-                    spaceWidth: 40,
+                    //spaceWidth: 40,
                     widthSrc: 30,
                     style: AppStyle().heading1,
                   ),
@@ -107,7 +109,14 @@ class LoginScreen extends StatelessWidget {
                         Text('Don\'t have any account ?',
                             style: AppStyle().heading4),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return const RegisterFirst();
+                              }),
+                            );
+                          },
                           child: Text('Sign up', style: AppStyle().heading3),
                         ),
                       ],
