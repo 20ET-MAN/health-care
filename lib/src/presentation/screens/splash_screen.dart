@@ -31,31 +31,38 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/icon/ic_caduceus.svg',
-              height: 180,
-              width: 180,
-              color: AppColor.colorBlackBlue,
-              cacheColorFilter: true,
+    return Scaffold(body: LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints layoutConstraints) {
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: layoutConstraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icon/ic_caduceus.svg',
+                    height: 180,
+                    width: 180,
+                    color: AppColor.colorBlackBlue,
+                    cacheColorFilter: true,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    'Health Care',
+                    style: AppStyle().heading2.copyWith(fontSize: 30),
+                  ),
+                  const SizedBox(
+                    height: 60,
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              'Health Care',
-              style: AppStyle().heading2.copyWith(fontSize: 30),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        );
+      },
+    ));
   }
 }

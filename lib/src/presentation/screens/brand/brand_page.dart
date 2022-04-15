@@ -19,17 +19,20 @@ class _BrandPageState extends State<BrandPage> {
     const BodyPageView(
       picturePath: 'assets/images/image_brand_01.png',
       title: 'We are ready for your health care',
-      description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      description:
+          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     ),
     const BodyPageView(
       picturePath: 'assets/images/image_brand_02.png',
       title: 'Organized teamwork',
-      description: 'bbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      description:
+          'bbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     ),
     const BodyPageView(
       picturePath: 'assets/images/image_brand_03.png',
       title: 'Ready to take your call',
-      description: 'cccccccccccccccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      description:
+          'cccccccccccccccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     ),
   ];
   final PageController _pageController = PageController();
@@ -49,76 +52,84 @@ class _BrandPageState extends State<BrandPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        height: double.maxFinite,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 540,
-                child: PageView(
-                  controller: _pageController,
-                  children: bodyPageView,
-                  onPageChanged: (page) {
-                    _updatePosition(page.toDouble());
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 30,
-                child: DotsIndicator(
-                  dotsCount: bodyPageView.length,
-                  mainAxisSize: MainAxisSize.max,
-                  position: _currentPosition,
-                  decorator: DotsDecorator(
-                    activeColor: AppColor.colorBlackBlue,
-                    size: const Size.fromRadius(5),
-                    activeSize: const Size.fromRadius(7),
-                    activeShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: viewportConstraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return const LoginScreen();
-                          }),
-                        );
-                      },
-                      child: Text(
-                        'Skip',
-                        style: AppStyle().heading4.copyWith(fontSize: 17),
+                    SizedBox(
+                      height: 540,
+                      child: PageView(
+                        controller: _pageController,
+                        children: bodyPageView,
+                        onPageChanged: (page) {
+                          _updatePosition(page.toDouble());
+                        },
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        _pageController.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeIn);
-                      },
-                      child: Text(
-                        'Next',
-                        style: AppStyle().heading4.copyWith(fontSize: 17),
+                    SizedBox(
+                      height: 30,
+                      child: DotsIndicator(
+                        dotsCount: bodyPageView.length,
+                        mainAxisSize: MainAxisSize.max,
+                        position: _currentPosition,
+                        decorator: DotsDecorator(
+                          activeColor: AppColor.colorBlackBlue,
+                          size: const Size.fromRadius(5),
+                          activeSize: const Size.fromRadius(7),
+                          activeShape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
                       ),
                     ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                  return const LoginScreen();
+                                }),
+                              );
+                            },
+                            child: Text(
+                              'Skip',
+                              style: AppStyle().heading4.copyWith(fontSize: 17),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeIn);
+                            },
+                            child: Text(
+                              'Next',
+                              style: AppStyle().heading4.copyWith(fontSize: 17),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    )
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 70,
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
