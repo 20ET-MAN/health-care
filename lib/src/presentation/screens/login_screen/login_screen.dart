@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
-import 'package:healthcare/src/presentation/screens/brand/brand_page.dart';
+import 'package:healthcare/src/presentation/screens/home/home_screen.dart';
 import 'package:healthcare/src/presentation/widget/app_icon_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_next_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_text_field.dart';
@@ -13,9 +13,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColor.appColorBg,
-      child: Center(
+    return Scaffold(
+      backgroundColor: AppColor.appColorBg,
+      body: Center(
         child: SizedBox(
           width: double.infinity,
           child: SingleChildScrollView(
@@ -85,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          return const BrandPage();
+                          return const HomeScreen();
                         }),
                       );
                     },

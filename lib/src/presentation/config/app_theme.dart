@@ -6,6 +6,9 @@ class AppThemes {
 
   ThemeData buildLightTheme() {
     return base.copyWith(
+      colorScheme: ColorScheme.fromSwatch(
+        primarySwatch: Colors.grey,
+      ),
       cardColor: Colors.white,
       backgroundColor: Colors.black,
       primaryColor: AppColor.colorOrange,
