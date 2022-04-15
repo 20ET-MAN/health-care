@@ -42,6 +42,8 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      scrollPadding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom * 4),
       controller: widget.controller,
       obscureText: widget.obscureText!, //show and disable pass
       decoration: InputDecoration(

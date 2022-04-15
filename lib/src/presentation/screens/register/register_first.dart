@@ -11,8 +11,8 @@ class RegisterFirst extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Center(
+    return Scaffold(
+      body: Center(
         child: SizedBox(
           width: double.infinity,
           child: SingleChildScrollView(
