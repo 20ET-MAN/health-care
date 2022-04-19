@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
+import 'package:healthcare/src/presentation/screens/home/home_page_grid_item.dart';
+
+import '../booking_screen/booking_page.dart';
+import '../notification_screen/notification_page.dart';
+import '../profile_screen/profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, this.isShow = true}) : super(key: key);
-  final bool isShow;
+  const HomeScreen({Key? key}) : super(key: key);
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final bool isShow = true;
+  final bool isUser = true;
 
   int _selectedIndex = 0;
 
@@ -18,13 +22,16 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-  final List<Widget> _items = [
-    const Text(
-      'Index 0: Home',
-    ),
-    const Text(
-      'Index 1: Profile',
-    ),
+  final List<Widget> _itemsUser = [
+    const HomePage(),
+    const BookingPage(),
+    const NotificationPage(),
+    const ProfileScreen(),
+  ];
+
+  final List<Widget> _itemsAdmin = [
+    const HomePage(),
+    const BookingPage(),
     const Text(
       'Index 3: Shop',
     ),
@@ -36,55 +43,83 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.colorGrey,
-      appBar: AppBar(
-        actions: [
-          Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.black, width: 1, style: BorderStyle.solid),
+      extendBody:
+          true, // todo thuoc tinh nay co the gay loi khi tinh toan man hinh
+      backgroundColor: AppColor.appColorBg,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints layoutConstraints) {
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+                minHeight: layoutConstraints.maxHeight,
+                minWidth: layoutConstraints.maxWidth,
+                maxWidth: layoutConstraints.maxWidth,
+                maxHeight: layoutConstraints.maxHeight),
+            child: IntrinsicHeight(
+              child: SafeArea(
+                child: Center(
+                  child: isUser
+                      ? _itemsUser.elementAt(_selectedIndex)
+                      : _itemsAdmin.elementAt(_selectedIndex),
+                ),
               ),
-              child: const Icon(Icons.ac_unit)),
-        ],
-      ),
-      body: Center(
-        child: _items.elementAt(_selectedIndex),
+            ),
+          );
+        },
       ),
       bottomNavigationBar: _showBottomNav(),
     );
   }
 
   Widget _showBottomNav() {
-    return BottomNavigationBar(
-      backgroundColor: AppColor.colorWhile,
-      selectedItemColor: AppColor.colorOrange,
-      currentIndex: _selectedIndex,
-      unselectedItemColor: Colors.grey,
-      onTap: _onTapItem,
-      elevation: 2,
-      items: [
-        isShow
-            ? const BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              )
-            : const BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: 'Profile',
-              ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_bag),
-          label: 'Shop',
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15), topLeft: Radius.circular(15)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0,
+            blurRadius: 1,
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
         ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.ac_unit_outlined),
-          label: 'Unit',
+        child: BottomNavigationBar(
+          // type: BottomNavigationBarType.fixed,
+          backgroundColor: AppColor.colorWhile,
+          selectedItemColor: AppColor.colorOrange,
+          currentIndex: _selectedIndex,
+          unselectedItemColor: AppColor.colorGrey,
+          onTap: _onTapItem,
+          items: [
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            isUser
+                ? const BottomNavigationBarItem(
+                    icon: Icon(Icons.perm_contact_calendar),
+                    label: 'Booking',
+                  )
+                : const BottomNavigationBarItem(
+                    icon: Icon(Icons.view_list),
+                    label: 'Book List',
+                  ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_active_rounded),
+              label: 'Notification',
+            ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: 'Profile',
+            ),
+          ],
         ),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.accessibility_new),
-          label: 'Man',
-        ),
-      ],
+      ),
     );
   }
 }

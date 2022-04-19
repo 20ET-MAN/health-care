@@ -6,7 +6,7 @@ class AppStyle {
   TextStyle heading1 = const TextStyle(
     color: AppColor.colorWhile,
     letterSpacing: 1.2,
-    fontSize: 15,
+    fontSize: 17,
     fontFamily: StyleConfig.sfProFont,
     fontWeight: FontWeight.w700,
     wordSpacing: 24 / 20,
@@ -14,7 +14,7 @@ class AppStyle {
   TextStyle heading2 = const TextStyle(
     color: AppColor.colorBlackBlue,
     letterSpacing: 1.2,
-    fontSize: 15,
+    fontSize: 17,
     fontFamily: StyleConfig.sfProFont,
     fontWeight: FontWeight.w700,
     wordSpacing: 24 / 20,

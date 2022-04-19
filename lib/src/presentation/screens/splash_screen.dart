@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
-
-import 'brand/brand_page.dart';
+import 'package:healthcare/src/presentation/screens/brand/brand_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      const Duration(seconds: 5),
+      const Duration(seconds: 1),
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -56,9 +55,6 @@ class _SplashScreenState extends State<SplashScreen> {
                       'Health Care',
                       style: AppStyle().heading2.copyWith(fontSize: 30),
                     ),
-                    /* const SizedBox(
-                    height: 60,
-                  ),*/
                   ],
                 ),
               ),
@@ -69,3 +65,20 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
+/*LayoutBuilder(
+builder: (BuildContext context, BoxConstraints layoutConstraints) {
+return ConstrainedBox(
+constraints: BoxConstraints(minHeight: layoutConstraints.maxHeight),
+child: SingleChildScrollView(
+child: IntrinsicHeight(
+child: SafeArea(
+child: isUser
+? _itemsUser.elementAt(_selectedIndex)
+    : _itemsAdmin.elementAt(_selectedIndex),
+),
+),
+),
+);
+},
+),*/

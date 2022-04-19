@@ -41,21 +41,24 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      scrollPadding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom * 4),
-      controller: widget.controller,
-      obscureText: widget.obscureText!, //show and disable pass
-      decoration: InputDecoration(
-        suffixIcon: widget.icon,
-        contentPadding: const EdgeInsets.all(20),
-        filled: true,
-        fillColor: AppColor.colorWhile,
-        hintText: widget.hint,
-        hintStyle: AppStyle().heading4.copyWith(color: AppColor.colorGrey),
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: TextField(
+        scrollPadding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom * 4),
+        controller: widget.controller,
+        obscureText: widget.obscureText!, //show and disable pass
+        decoration: InputDecoration(
+          suffixIcon: widget.icon,
+          contentPadding: const EdgeInsets.all(20),
+          filled: true,
+          fillColor: AppColor.colorWhile,
+          hintText: widget.hint,
+          hintStyle: AppStyle().heading4.copyWith(color: AppColor.colorGrey),
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
     );

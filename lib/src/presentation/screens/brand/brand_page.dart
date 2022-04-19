@@ -122,7 +122,7 @@ class _BrandPageState extends State<BrandPage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 50,
                     )
                   ],
                 ),
