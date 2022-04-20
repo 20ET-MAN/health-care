@@ -34,7 +34,7 @@ class BookingPage extends StatelessWidget {
                   children: [
                     Text(
                       'Thông tin cá nhân',
-                      style: AppStyle().heading4,
+                      style: AppStyle().heading2,
                     ),
                     const AppTextField(hint: 'Họ tên'),
                     const AppTextField(hint: 'Ngày sinh'),
@@ -66,7 +66,7 @@ class BookingPage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Thông tin Lịch hẹn', style: AppStyle().heading4),
+                    Text('Thông tin Lịch hẹn', style: AppStyle().heading2),
                     const AppTextField(hint: 'Chọn bác sĩ'),
                     const AppTextField(hint: 'Ngày khám'),
                     const AppTextField(hint: 'Địa điểm'),

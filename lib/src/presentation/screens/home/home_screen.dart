@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
-import 'package:healthcare/src/presentation/screens/home/home_page_grid_item.dart';
+import 'package:healthcare/src/presentation/screens/home/home_page.dart';
 
 import '../booking_screen/booking_page.dart';
 import '../notification_screen/notification_page.dart';
@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _itemsUser = [
     const HomePage(),
     const BookingPage(),
-    const NotificationPage(),
+    NotificationPage(),
     const ProfileScreen(),
   ];
 

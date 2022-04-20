@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
 
-import 'home_page_grid_item.dart';
+import 'home_page.dart';
 
 class HomePageGridItem extends StatefulWidget {
   HomePageGridItem({Key? key}) : super(key: key);
@@ -35,6 +35,7 @@ class _HomePageGridItemState extends State<HomePageGridItem> {
       scrollDirection: Axis.vertical,
       itemCount: 4,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        mainAxisExtent: 180,
         crossAxisCount: 2,
         crossAxisSpacing: 3,
         mainAxisSpacing: 3,
@@ -58,9 +59,10 @@ class _HomePageGridItemState extends State<HomePageGridItem> {
                 : AppColor.colorWhile,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              height: 300,
+              //height: 300,
               width: double.infinity,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(

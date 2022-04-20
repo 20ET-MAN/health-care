@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
+import 'package:healthcare/src/presentation/screens/profile_screen/profile_item.dart';
 
 import '../../config/app_style.dart';
 
@@ -20,213 +21,58 @@ class ProfileScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            const CircleAvatar(
-              maxRadius: 35,
-              minRadius: 25,
-              backgroundColor: AppColor.colorOrange,
-              child: Text('AH'),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              padding: const EdgeInsets.all(15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColor.colorWhile,
-                borderRadius: BorderRadius.circular(5),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              const CircleAvatar(
+                maxRadius: 35,
+                minRadius: 25,
+                backgroundColor: AppColor.colorOrange,
+                child: Text('AH'),
               ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorOrange,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Text(
-                      'My Account',
-                      style: AppStyle().heading2,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: AppColor.colorBlackBlue,
-                  )
-                ],
+              const SizedBox(height: 20),
+              ProfileItem(
+                feature: 'My Account',
+                onTap: () {},
+                svgSrc: 'assets/icon/ic_google.svg',
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              padding: const EdgeInsets.all(15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColor.colorWhile,
-                borderRadius: BorderRadius.circular(5),
+              ProfileItem(
+                feature: 'Setting',
+                onTap: () {},
+                svgSrc: 'assets/icon/ic_google.svg',
               ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorOrange,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Text(
-                      'Setting',
-                      style: AppStyle().heading2,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: AppColor.colorBlackBlue,
-                  )
-                ],
+              ProfileItem(
+                feature: 'Help Center',
+                onTap: () {},
+                svgSrc: 'assets/icon/ic_google.svg',
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              padding: const EdgeInsets.all(15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColor.colorWhile,
-                borderRadius: BorderRadius.circular(5),
+              ProfileItem(
+                feature: 'Logout',
+                onTap: () {},
+                svgSrc: 'assets/icon/ic_google.svg',
               ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorOrange,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Text(
-                      'Help center',
-                      style: AppStyle().heading2,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: AppColor.colorBlackBlue,
-                  )
-                ],
+              ProfileItem(
+                feature: 'Logout',
+                onTap: () {},
+                svgSrc: 'assets/icon/ic_google.svg',
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              padding: const EdgeInsets.all(15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColor.colorWhile,
-                borderRadius: BorderRadius.circular(5),
+              ProfileItem(
+                feature: 'Logout',
+                onTap: () {},
+                svgSrc: 'assets/icon/ic_google.svg',
               ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorOrange,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Text(
-                      'My Account',
-                      style: AppStyle().heading2,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: AppColor.colorBlackBlue,
-                  )
-                ],
+              ProfileItem(
+                feature: 'Logout',
+                onTap: () {},
+                svgSrc: 'assets/icon/ic_google.svg',
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              padding: const EdgeInsets.all(15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColor.colorWhile,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorOrange,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Text(
-                      'My Account',
-                      style: AppStyle().heading2,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: AppColor.colorBlackBlue,
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              padding: const EdgeInsets.all(15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColor.colorWhile,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorOrange,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Text(
-                      'Logout',
-                      style: AppStyle().heading2,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: AppColor.colorBlackBlue,
-                  )
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
