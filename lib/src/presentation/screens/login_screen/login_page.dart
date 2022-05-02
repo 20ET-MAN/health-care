@@ -1,15 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
-import 'package:healthcare/src/presentation/screens/home/home_screen.dart';
+import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:healthcare/src/presentation/widget/app_icon_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_next_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_text_field.dart';
 
-import '../register/register_first.dart';
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,12 +81,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   AppNextBt(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return const HomeScreen();
-                        }),
-                      );
+                      context.router.replace(const HomeScreenRoute());
                     },
                     label: 'Login',
                     isActive: true,
@@ -110,12 +104,7 @@ class LoginScreen extends StatelessWidget {
                             style: AppStyle().heading4),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return const RegisterFirst();
-                              }),
-                            );
+                            context.router.push(const RegisterFirstRoute());
                           },
                           child: Text('Sign up', style: AppStyle().heading3),
                         ),

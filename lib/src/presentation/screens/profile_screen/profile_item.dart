@@ -18,40 +18,40 @@ class ProfileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      padding: const EdgeInsets.all(15),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColor.colorWhile,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              color: AppColor.colorOrange,
-              borderRadius: BorderRadius.circular(5),
+    return GestureDetector(
+      onTap: onTap.call,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.all(15),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColor.colorWhile,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Row(
+          children: [
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                color: AppColor.colorOrange,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: SvgPicture.asset(svgSrc),
             ),
-            child: SvgPicture.asset(svgSrc),
-          ),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Text(
-              feature,
-              style: AppStyle().heading2,
+            const SizedBox(width: 15),
+            Expanded(
+              child: Text(
+                feature,
+                style: AppStyle().heading2,
+              ),
             ),
-          ),
-          GestureDetector(
-            onTap: onTap.call,
-            child: const Icon(
+            const Icon(
               Icons.arrow_forward_rounded,
               color: AppColor.colorBlackBlue,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

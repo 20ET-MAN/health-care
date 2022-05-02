@@ -1,9 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
+import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:healthcare/src/presentation/screens/brand/page_view.dart';
-import 'package:healthcare/src/presentation/screens/login_screen/login_screen.dart';
 
 class BrandPage extends StatefulWidget {
   const BrandPage({
@@ -95,12 +96,7 @@ class _BrandPageState extends State<BrandPage> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return const LoginScreen();
-                                }),
-                              );
+                              context.router.replace(const LoginPageRoute());
                             },
                             child: Text(
                               'Skip',

@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
+import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:healthcare/src/presentation/widget/app_next_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_text_field.dart';
 
@@ -10,18 +12,7 @@ class BookingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.5,
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColor.colorWhile,
-        title: Text(
-          'Booking',
-          style: AppStyle().heading2.copyWith(fontSize: 27),
-        ),
-        centerTitle: true,
-      ),
       backgroundColor: AppColor.appColorBg,
-      //appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -43,10 +34,11 @@ class BookingPage extends StatelessWidget {
                       child: Row(
                         children: const [
                           Expanded(
-                              child: AppNextBt(
-                            label: 'Nam',
-                            isActive: false,
-                          )),
+                            child: AppNextBt(
+                              label: 'Nam',
+                              isActive: false,
+                            ),
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                               child: AppNextBt(
@@ -74,9 +66,12 @@ class BookingPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 const AppNextBt(label: 'Đặt lịch khám trực tiếp'),
-                const AppNextBt(
+                AppNextBt(
+                  onPressed: () {
+                    context.router.push(DoctorPageRoute());
+                  },
                   label: 'Đặt lịch khám tại nhà',
-                  isActive: false,
+                  isActive: true,
                 ),
               ],
             ),

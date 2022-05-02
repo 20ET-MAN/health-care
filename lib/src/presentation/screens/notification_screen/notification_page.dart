@@ -1,34 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:healthcare/src/domain/entities/notifiation_entity/notification_entity.dart';
+import 'package:healthcare/src/domain/entities/notification_entity.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
+import 'package:healthcare/src/presentation/screens/notification_screen/notification_other.dart';
+import 'package:healthcare/src/presentation/screens/notification_screen/notification_today.dart';
+import 'package:healthcare/src/presentation/screens/notification_screen/notification_yesterday.dart';
 
-class NotificationPage extends StatelessWidget {
+class NotificationPage extends StatefulWidget {
   NotificationPage({Key? key}) : super(key: key);
 
   final List<NotificationEntity> notificationToday = [
-    NotificationEntity('assets/icon/ic_google.svg', 'title', 'content'),
-    NotificationEntity('assets/icon/ic_google.svg', 'title', 'content'),
-    NotificationEntity('assets/icon/ic_google.svg', 'title', 'content'),
-    NotificationEntity('assets/icon/ic_google.svg', 'title', 'content'),
+    NotificationEntity('assets/icon/ic_google.svg', 'titleToday1', 'content'),
+    NotificationEntity('assets/icon/ic_google.svg', 'titleToday2', 'content'),
+    NotificationEntity('assets/icon/ic_google.svg', 'titleToday3', 'content'),
+    NotificationEntity('assets/icon/ic_google.svg', 'titleToday4', 'content'),
   ];
-  final List<NotificationEntity> notificationYesterday = [];
+
+  final List<NotificationEntity> notificationYesterday = [
+    NotificationEntity(
+        'assets/icon/ic_google.svg', 'titleYesterday1', 'contentToday'),
+    NotificationEntity(
+        'assets/icon/ic_google.svg', 'titleYesterday2', 'contentToday'),
+    NotificationEntity(
+        'assets/icon/ic_google.svg', 'titleYesterday3', 'contentToday'),
+    NotificationEntity(
+        'assets/icon/ic_google.svg', 'titleYesterday4', 'contentToday'),
+  ];
+
+  final List<NotificationEntity> notificationOther = [
+    NotificationEntity(
+        'assets/icon/ic_google.svg', 'notificationOther1', 'contentToday1'),
+    NotificationEntity(
+        'assets/icon/ic_google.svg', 'notificationOther2', 'contentToday2'),
+    NotificationEntity(
+        'assets/icon/ic_google.svg', 'notificationOther3', 'contentToday3'),
+    NotificationEntity(
+        'assets/icon/ic_google.svg', 'notificationOther4', 'contentToday4'),
+  ];
 
   @override
+  State<NotificationPage> createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage> {
+  @override
   Widget build(BuildContext context) {
-    final int index = 0;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.5,
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColor.colorWhile,
-        title: Text(
-          'Notification',
-          style: AppStyle().heading2.copyWith(fontSize: 27),
-        ),
-        centerTitle: true,
-      ),
       backgroundColor: AppColor.appColorBg,
       body: SingleChildScrollView(
         child: Container(
@@ -38,6 +55,7 @@ class NotificationPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -45,117 +63,12 @@ class NotificationPage extends StatelessWidget {
                     style: AppStyle().heading2.copyWith(fontSize: 20),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: SvgPicture.asset(
-                              notificationToday[index].assetName),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  /*Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),*/
+                  NotificationToday(item: widget.notificationToday),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -163,150 +76,11 @@ class NotificationPage extends StatelessWidget {
                     style: AppStyle().heading2.copyWith(fontSize: 20),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                  NotificationYesterday(item: widget.notificationYesterday),
                 ],
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,146 +90,7 @@ class NotificationPage extends StatelessWidget {
                     style: AppStyle().heading2.copyWith(fontSize: 20),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(15),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.colorWhile,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.colorOrange,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Titleeeee',
-                                style: AppStyle().heading2,
-                              ),
-                              const Text(
-                                  'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                  NotificationOther(item: widget.notificationOther),
                 ],
               ),
             ],

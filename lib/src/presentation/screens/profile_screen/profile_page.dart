@@ -1,26 +1,18 @@
+import 'package:app_settings/app_settings.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
+import 'package:healthcare/src/presentation/config/app_style.dart';
+import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:healthcare/src/presentation/screens/profile_screen/profile_item.dart';
 
-import '../../config/app_style.dart';
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.appColorBg,
-      appBar: AppBar(
-        elevation: 0.5,
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColor.colorWhile,
-        title: Text(
-          'Profile',
-          style: AppStyle().heading2.copyWith(fontSize: 27),
-        ),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -29,46 +21,55 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 20),
-              const CircleAvatar(
-                maxRadius: 35,
-                minRadius: 25,
-                backgroundColor: AppColor.colorOrange,
-                child: Text('AH'),
+              const SizedBox(
+                height: 100,
+                width: 100,
+                child: CircleAvatar(
+                  maxRadius: 40,
+                  minRadius: 30,
+                  backgroundColor: AppColor.colorOrange,
+                  child: Icon(
+                    Icons.image_outlined,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'nam te ahihi',
+                style: AppStyle().heading2,
               ),
               const SizedBox(height: 20),
               ProfileItem(
-                feature: 'My Account',
+                feature: 'Thông tin tài khoản',
                 onTap: () {},
                 svgSrc: 'assets/icon/ic_google.svg',
               ),
               ProfileItem(
-                feature: 'Setting',
-                onTap: () {},
+                feature: 'Cài đặt',
+                onTap: () {
+                  AppSettings.openNotificationSettings();
+                },
                 svgSrc: 'assets/icon/ic_google.svg',
               ),
               ProfileItem(
-                feature: 'Help Center',
-                onTap: () {},
+                feature: 'Quy trình hướng dẫn khám bệnh',
+                onTap: () {
+                  context.router.push(const HelpCenterRoute());
+                },
                 svgSrc: 'assets/icon/ic_google.svg',
               ),
               ProfileItem(
-                feature: 'Logout',
-                onTap: () {},
+                feature: 'Thống kê dữ liệu Covid',
+                onTap: () {
+                  context.router.push(const CovidDataPageRoute());
+                },
                 svgSrc: 'assets/icon/ic_google.svg',
               ),
               ProfileItem(
-                feature: 'Logout',
-                onTap: () {},
-                svgSrc: 'assets/icon/ic_google.svg',
-              ),
-              ProfileItem(
-                feature: 'Logout',
-                onTap: () {},
-                svgSrc: 'assets/icon/ic_google.svg',
-              ),
-              ProfileItem(
-                feature: 'Logout',
-                onTap: () {},
+                feature: 'Đăng xuất',
+                onTap: () {
+                  context.router.replace(const LoginPageRoute());
+                },
                 svgSrc: 'assets/icon/ic_google.svg',
               ),
             ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:healthcare/src/presentation/screens/login_screen/login_screen.dart';
+import 'package:healthcare/src/presentation/config/app_color.dart';
+import 'package:healthcare/src/presentation/screens/login_screen/login_page.dart';
 
 import '../../config/app_style.dart';
 import '../../widget/app_next_bt.dart';
@@ -12,6 +13,7 @@ class RegisterFirst extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.appColorBg,
       body: Center(
         child: SizedBox(
           width: double.infinity,
@@ -100,7 +102,7 @@ class RegisterFirst extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) {
-                                return const LoginScreen();
+                                return const LoginPage();
                               }),
                             );
                           },

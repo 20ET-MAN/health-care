@@ -1,7 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
+import 'package:healthcare/src/presentation/route/routes.gr.dart';
 
 import 'home_page.dart';
 
@@ -10,13 +11,29 @@ class HomePageGridItem extends StatefulWidget {
 
   final List<ServiceItemModel> item = [
     ServiceItemModel(
-        'Test Covid', 'Đăng kí test covid tại nhà, tại bệnh viện', 'iconSrc'),
-    ServiceItemModel('Đặt lịch khám',
-        'Đặt lích khám tại bệnh viện, hoặc tại nhà', 'iconSrc'),
+      'Test Covid',
+      'Đăng kí test covid tại nhà, tại bệnh viện',
+      'assets/icon/ic_covid.png',
+      const HomePageRoute(),
+    ),
     ServiceItemModel(
-        'Doctor', 'Danh sách, thông tin chi tiết về các bác sĩ', 'iconSrc'),
+      'Dịch vụ khám',
+      'Đặt lích khám tại bệnh viện, hoặc tại nhà',
+      'assets/icon/ic_service.png',
+      const ServiceWebViewRoute(),
+    ),
     ServiceItemModel(
-        'Bệnh viện gần đây', 'Kết nối các bệnh viện quanh bạn', 'iconSrc'),
+      'Bác sĩ',
+      'Danh sách, thông tin chi tiết về các bác sĩ',
+      'assets/icon/ic_doctor.png',
+      DoctorPageRoute(),
+    ),
+    ServiceItemModel(
+      'Bệnh viện gần đây',
+      'Kết nối các bệnh viện quanh bạn',
+      'assets/icon/ic_hospital.png',
+      const NearHospitalRoute(),
+    ),
   ];
 
   @override
@@ -26,6 +43,7 @@ class HomePageGridItem extends StatefulWidget {
 class _HomePageGridItemState extends State<HomePageGridItem> {
   // set an int with value -1 since no card has been selected
   int selectedCard = 0;
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,20 +53,22 @@ class _HomePageGridItemState extends State<HomePageGridItem> {
       scrollDirection: Axis.vertical,
       itemCount: 4,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisExtent: 180,
+        mainAxisExtent: MediaQuery.of(context).size.height / 4.5,
         crossAxisCount: 2,
         crossAxisSpacing: 3,
         mainAxisSpacing: 3,
         childAspectRatio: MediaQuery.of(context).size.width /
-            (MediaQuery.of(context).size.height / 2),
+            (MediaQuery.of(context).size.height / 3),
       ),
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
-            setState(() {
-              // ontap of each card, set the defined int to the grid view index
-              selectedCard = index;
-            });
+            setState(
+              () {
+                selectedCard = index;
+                context.router.push(widget.item[index].screen);
+              },
+            );
           },
           child: Card(
             shape: RoundedRectangleBorder(
@@ -66,9 +86,16 @@ class _HomePageGridItemState extends State<HomePageGridItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: SvgPicture.asset('assets/icon/ic_google.svg'),
+                    height: 35,
+                    width: 35,
+                    child: Image.asset(
+                      widget.item[index].iconSrc,
+                      color: selectedCard == index
+                          ? AppColor.colorWhile
+                          : AppColor.colorOrange,
+                      width: 20,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(

@@ -1,10 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
-import 'package:healthcare/src/presentation/screens/home/home_page.dart';
+import 'package:healthcare/src/presentation/route/routes.gr.dart';
 
-import '../booking_screen/booking_page.dart';
-import '../notification_screen/notification_page.dart';
-import '../profile_screen/profile_page.dart';
+import '../../config/app_style.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,86 +14,63 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final bool isUser = true;
 
-  int _selectedIndex = 0;
+  final PageController _pageController = PageController();
 
-  void _onTapItem(int index) {
-    _selectedIndex = index;
-    setState(() {});
+  final List<PageRouteInfo> _itemsUser = [
+    const HomePageRoute(),
+    const BookingPageRoute(),
+    NotificationPageRoute(),
+    const ProfilePageRoute()
+  ];
+
+  final List<PageRouteInfo> _itemsAdmin = [
+    const HomePageRoute(),
+    BookingListAdminRoute(),
+    NotificationPageRoute(),
+    const ProfilePageRoute()
+  ];
+
+  final List<String> itemTitle = [
+    'Trang chủ',
+    'Đặt lịch',
+    'Thông báo',
+    'Thông tin cá nhân'
+  ];
+
+  void onItemTap(int selectedIndex) {
+    _pageController.jumpToPage(selectedIndex);
   }
-
-  final List<Widget> _itemsUser = [
-    const HomePage(),
-    const BookingPage(),
-    NotificationPage(),
-    const ProfileScreen(),
-  ];
-
-  final List<Widget> _itemsAdmin = [
-    const HomePage(),
-    const BookingPage(),
-    const Text(
-      'Index 3: Shop',
-    ),
-    const Text(
-      'Index 4: Shop',
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody:
-          true, // todo thuoc tinh nay co the gay loi khi tinh toan man hinh
-      backgroundColor: AppColor.appColorBg,
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints layoutConstraints) {
-          return ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: layoutConstraints.maxHeight,
-                minWidth: layoutConstraints.maxWidth,
-                maxWidth: layoutConstraints.maxWidth,
-                maxHeight: layoutConstraints.maxHeight),
-            child: IntrinsicHeight(
-              child: SafeArea(
-                child: Center(
-                  child: isUser
-                      ? _itemsUser.elementAt(_selectedIndex)
-                      : _itemsAdmin.elementAt(_selectedIndex),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-      bottomNavigationBar: _showBottomNav(),
-    );
-  }
-
-  Widget _showBottomNav() {
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(15), topLeft: Radius.circular(15)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            spreadRadius: 0,
-            blurRadius: 1,
+    return AutoTabsScaffold(
+      appBarBuilder: (_, tabRouter) {
+        return AppBar(
+          elevation: 0.5,
+          backgroundColor: AppColor.colorWhile,
+          title: Text(
+            itemTitle[tabRouter.activeIndex],
+            style: AppStyle().heading2.copyWith(fontSize: 27),
           ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(15),
-          topRight: Radius.circular(15),
+          centerTitle: true,
+        );
+      },
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppColor.colorOrange,
+        child: const Icon(
+          Icons.message_outlined,
+          color: AppColor.colorWhile,
         ),
-        child: BottomNavigationBar(
-          // type: BottomNavigationBarType.fixed,
+      ),
+      routes: isUser ? _itemsUser : _itemsAdmin,
+      bottomNavigationBuilder: (_, tabRouter) {
+        return BottomNavigationBar(
           backgroundColor: AppColor.colorWhile,
           selectedItemColor: AppColor.colorOrange,
-          currentIndex: _selectedIndex,
+          currentIndex: tabRouter.activeIndex,
           unselectedItemColor: AppColor.colorGrey,
-          onTap: _onTapItem,
+          onTap: tabRouter.setActiveIndex,
           items: [
             const BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -118,8 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Profile',
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
