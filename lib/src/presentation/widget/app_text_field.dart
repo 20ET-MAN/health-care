@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 
 import '../config/app_style.dart';
@@ -15,6 +16,7 @@ class AppTextField extends StatefulWidget {
     required this.hint,
     this.controller,
     this.icon,
+    this.textInputFormatter,
   }) : super(key: key);
   final String hint;
   final TextEditingController? controller;
@@ -24,7 +26,8 @@ class AppTextField extends StatefulWidget {
   final Function? validator;
   final Color borderColor;
   final Color? errorColor;
-  final Icon? icon;
+  final Widget? icon;
+  final List<TextInputFormatter>? textInputFormatter;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -47,6 +50,8 @@ class _AppTextFieldState extends State<AppTextField> {
         scrollPadding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom * 4),
         controller: widget.controller,
+        inputFormatters: widget.textInputFormatter,
+        obscuringCharacter: '*',
         obscureText: widget.obscureText!, //show and disable pass
         decoration: InputDecoration(
           suffixIcon: widget.icon,

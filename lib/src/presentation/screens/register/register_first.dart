@@ -3,12 +3,17 @@ import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/screens/login_screen/login_page.dart';
 
 import '../../config/app_style.dart';
+import '../../state/auth_service.dart';
 import '../../widget/app_next_bt.dart';
 import '../../widget/app_text_field.dart';
 import '../brand/brand_page.dart';
 
 class RegisterFirst extends StatelessWidget {
-  const RegisterFirst({Key? key}) : super(key: key);
+  RegisterFirst({Key? key}) : super(key: key);
+  final TextEditingController eMail = TextEditingController();
+  final TextEditingController userName = TextEditingController();
+  final TextEditingController passWord = TextEditingController();
+  final TextEditingController passWordConfirm = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +43,10 @@ class RegisterFirst extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const AppTextField(hint: 'Your email or phone'),
+                  AppTextField(
+                    hint: 'Your email or phone',
+                    controller: eMail,
+                  ),
                   Row(
                     children: [
                       Text(
@@ -59,8 +67,9 @@ class RegisterFirst extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const AppTextField(
+                  AppTextField(
                     hint: 'Password',
+                    controller: passWord,
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -78,6 +87,8 @@ class RegisterFirst extends StatelessWidget {
                   const SizedBox(height: 30),
                   AppNextBt(
                     onPressed: () {
+                      AuthService().createUserWithEmailAndPassword(
+                          eMail.text, passWord.text);
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {

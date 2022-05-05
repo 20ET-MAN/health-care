@@ -59,8 +59,10 @@ class AppRouter extends _i20.RootStackRouter {
           routeData: routeData, child: const _i4.LoginPage());
     },
     RegisterFirstRoute.name: (routeData) {
+      final args = routeData.argsAs<RegisterFirstRouteArgs>(
+          orElse: () => const RegisterFirstRouteArgs());
       return _i20.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i5.RegisterFirst());
+          routeData: routeData, child: _i5.RegisterFirst(key: args.key));
     },
     DoctorPageRoute.name: (routeData) {
       final args = routeData.argsAs<DoctorPageRouteArgs>(
@@ -203,10 +205,23 @@ class LoginPageRoute extends _i20.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.RegisterFirst]
-class RegisterFirstRoute extends _i20.PageRouteInfo<void> {
-  const RegisterFirstRoute() : super(RegisterFirstRoute.name, path: 'register');
+class RegisterFirstRoute extends _i20.PageRouteInfo<RegisterFirstRouteArgs> {
+  RegisterFirstRoute({_i21.Key? key})
+      : super(RegisterFirstRoute.name,
+            path: 'register', args: RegisterFirstRouteArgs(key: key));
 
   static const String name = 'RegisterFirstRoute';
+}
+
+class RegisterFirstRouteArgs {
+  const RegisterFirstRouteArgs({this.key});
+
+  final _i21.Key? key;
+
+  @override
+  String toString() {
+    return 'RegisterFirstRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

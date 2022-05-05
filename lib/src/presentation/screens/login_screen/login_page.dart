@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
@@ -7,8 +8,27 @@ import 'package:healthcare/src/presentation/widget/app_icon_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_next_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_text_field.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+@override
+class _LoginPageState extends State<LoginPage> {
+  final textFieldFocusNode = FocusNode();
+  bool _obscured = true;
+
+  void _toggleObscured() {
+    setState(() {
+      _obscured = !_obscured;
+      if (textFieldFocusNode.hasPrimaryFocus)
+        return; // If focus is on text field, dont unfocus
+      textFieldFocusNode.canRequestFocus =
+          false; // Prevents focus if tap on eye
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +94,24 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const AppTextField(
+                  AppTextField(
+                    textInputFormatter: [
+                      FilteringTextInputFormatter.deny(
+                          RegExp(r'[/\\á-ú Á-Ú|]')),
+                    ],
                     hint: 'Password',
-                    icon: Icon(Icons.remove_red_eye),
+                    obscureText: _obscured,
+                    icon: GestureDetector(
+                      onTap: () {
+                        _toggleObscured();
+                      },
+                      child: Icon(
+                        _obscured
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded,
+                        size: 24,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   AppNextBt(
@@ -104,7 +139,7 @@ class LoginPage extends StatelessWidget {
                             style: AppStyle().heading4),
                         GestureDetector(
                           onTap: () {
-                            context.router.push(const RegisterFirstRoute());
+                            context.router.push(RegisterFirstRoute());
                           },
                           child: Text('Sign up', style: AppStyle().heading3),
                         ),

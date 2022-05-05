@@ -19,21 +19,21 @@ class _BrandPageState extends State<BrandPage> {
   final List<BodyPageView> bodyPageView = [
     const BodyPageView(
       picturePath: 'assets/images/image_brand_01.png',
-      title: 'We are ready for your health care',
+      title: 'Chúng tôi luôn sẵn sàng chăm sóc sức khoẻ cho bạn',
       description:
-          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          'Chúng tôi luôn sẵn sàng chăm sóc sức khoẻ cho bạn Tổ chức bệnh viện làm việc chuyên nghiệp Tổ chức bệnh viện làm việc chuyên nghiệp',
     ),
     const BodyPageView(
       picturePath: 'assets/images/image_brand_02.png',
-      title: 'Organized teamwork',
+      title: 'Tổ chức bệnh viện làm việc chuyên nghiệp',
       description:
-          'bbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          'Tổ chức bệnh viện làm việc chuyên nghiệp Tổ chức bệnh viện làm việc chuyên nghiệp Tổ chức bệnh viện làm việc chuyên nghiệp',
     ),
     const BodyPageView(
       picturePath: 'assets/images/image_brand_03.png',
-      title: 'Ready to take your call',
+      title: 'Chúng tôi luôn sẵn sàng nhận cuộc gọi của bạn',
       description:
-          'cccccccccccccccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          'Chúng tôi luôn sẵn sàng nhận cuộc gọi của bạn Chúng tôi luôn sẵn sàng nhận cuộc gọi của bạn Chúng tôi luôn sẵn sàng nhận cuộc gọi của bạn',
     ),
   ];
   final PageController _pageController = PageController();
@@ -64,7 +64,7 @@ class _BrandPageState extends State<BrandPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: 540,
+                      height: 600,
                       child: PageView(
                         controller: _pageController,
                         children: bodyPageView,

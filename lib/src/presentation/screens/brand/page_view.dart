@@ -18,19 +18,25 @@ class BodyPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Image.asset(
           picturePath,
           height: 350,
         ),
-        const SizedBox(height: 10),
-        Text(
-          title,
-          style: AppStyle().heading2.copyWith(fontSize: 17),
+        const SizedBox(height: 30),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 30,
+          ),
+          child: Text(
+            title,
+            style: AppStyle().heading2.copyWith(fontSize: 17),
+          ),
         ),
         const SizedBox(height: 20),
         Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
           child: Text(
             description,
             style: AppStyle().heading4,
