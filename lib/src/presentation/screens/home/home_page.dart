@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
@@ -62,7 +61,7 @@ class HomePage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              Expanded(
+                              const Expanded(
                                 child: AppNextBt(
                                   label: 'Gửi thông báo',
                                   color: AppColor.colorBlackBlue,
@@ -105,18 +104,24 @@ class HomePage extends StatelessWidget {
                 color: AppColor.colorGrey,
               ),
               const SizedBox(height: 20),
-              Text(
-                'Lorem Ipsum',
-                style: AppStyle().heading2,
-              ),
-              const Text(
-                  'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using , making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).'),
-              Text(
-                'Where can I get some?',
-                style: AppStyle().heading2,
-              ),
-              const Text(
-                  'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using , making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).'),
+              const BottomTextInfo(
+                  icon: Icons.lock_clock,
+                  title: 'THỜI GIAN LÀM VIỆC',
+                  label:
+                      'Thời gian làm việc tất cả các ngày trong tuần(Ngày lễ, Thứ 7 và Chủ nhật)'),
+              const BottomTextInfo(
+                  icon: Icons.location_on_outlined,
+                  title: 'Địa chỉ',
+                  label:
+                      'Số 2 Bế Văn Đàn, Phường Quang Trung, Quận Hà Đông, Thành Phố Hà Nội'),
+              const BottomTextInfo(
+                  icon: Icons.phone,
+                  title: 'Số điện thoại',
+                  label: '0915 580 644 - 0969 668 115'),
+              const BottomTextInfo(
+                  icon: Icons.mail_outline,
+                  title: 'Email',
+                  label: 'benhviendkhadong@gmail.com'),
             ],
           ),
         ),
@@ -125,11 +130,43 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class ServiceItemModel {
+class BottomTextInfo extends StatelessWidget {
+  const BottomTextInfo(
+      {Key? key, required this.title, required this.label, required this.icon})
+      : super(key: key);
   final String title;
   final String label;
-  final String iconSrc;
-  final PageRouteInfo screen;
+  final IconData icon;
 
-  ServiceItemModel(this.title, this.label, this.iconSrc, this.screen);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Icon(
+          icon,
+          color: AppColor.colorOrange,
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: AppStyle().heading2,
+              ),
+              const SizedBox(height: 5),
+              Text(label, style: AppStyle().heading4),
+              const SizedBox(
+                height: 10,
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -1,34 +1,34 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:healthcare/src/domain/entities/service_entity.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 
-import 'home_page.dart';
-
 class HomePageGridItem extends StatefulWidget {
   HomePageGridItem({Key? key}) : super(key: key);
 
-  final List<ServiceItemModel> item = [
-    ServiceItemModel(
+  final List<ServiceItemEntity> item = [
+    ServiceItemEntity(
       'Test Covid',
       'Đăng kí test covid tại nhà, tại bệnh viện',
       'assets/icon/ic_covid.png',
       const HomePageRoute(),
     ),
-    ServiceItemModel(
+    ServiceItemEntity(
       'Dịch vụ khám',
       'Đặt lích khám tại bệnh viện, hoặc tại nhà',
       'assets/icon/ic_service.png',
       const ServiceWebViewRoute(),
     ),
-    ServiceItemModel(
+    ServiceItemEntity(
       'Bác sĩ',
       'Danh sách, thông tin chi tiết về các bác sĩ',
       'assets/icon/ic_doctor.png',
       DoctorPageRoute(),
     ),
-    ServiceItemModel(
+    ServiceItemEntity(
       'Bệnh viện gần đây',
       'Kết nối các bệnh viện quanh bạn',
       'assets/icon/ic_hospital.png',
@@ -63,10 +63,12 @@ class _HomePageGridItemState extends State<HomePageGridItem> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
+            //EasyLoading.show(status: 'Vui lòng đợi.....', dismissOnTap: true, d);
             setState(
               () {
-                selectedCard = index;
                 context.router.push(widget.item[index].screen);
+                selectedCard = index;
+                EasyLoading.dismiss();
               },
             );
           },

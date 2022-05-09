@@ -31,7 +31,9 @@ class AppNextBt extends StatelessWidget {
               }
             : null,
         child: Text(label,
-            style: isActive! ? AppStyle().heading1 : AppStyle().heading2),
+            style: isActive!
+                ? AppStyle().heading1.copyWith(fontSize: 15)
+                : AppStyle().heading2.copyWith(fontSize: 15)),
         style: ElevatedButton.styleFrom(
           primary: color,
           elevation: 3,

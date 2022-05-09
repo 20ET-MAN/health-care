@@ -1,13 +1,17 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:healthcare/src/domain/entities/user_entity.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:healthcare/src/presentation/screens/profile_screen/profile_item.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key, this.userEntity}) : super(key: key);
+  final UserEntity? userEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -25,52 +29,56 @@ class ProfilePage extends StatelessWidget {
                 height: 100,
                 width: 100,
                 child: CircleAvatar(
-                  maxRadius: 40,
-                  minRadius: 30,
+                  radius: 100,
                   backgroundColor: AppColor.colorOrange,
-                  child: Icon(
-                    Icons.image_outlined,
+                  backgroundImage: NetworkImage(
+                    'https://trainghiemsong.vn/wp-content/uploads/2021/03/1-625.jpg',
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               Text(
-                'nam te ahihi',
+                '',
                 style: AppStyle().heading2,
               ),
               const SizedBox(height: 20),
               ProfileItem(
                 feature: 'Thông tin tài khoản',
                 onTap: () {},
-                svgSrc: 'assets/icon/ic_google.svg',
+                icon: Icons.info_outline,
               ),
               ProfileItem(
                 feature: 'Cài đặt',
                 onTap: () {
                   AppSettings.openNotificationSettings();
                 },
-                svgSrc: 'assets/icon/ic_google.svg',
+                icon: Icons.settings,
               ),
               ProfileItem(
-                feature: 'Quy trình hướng dẫn khám bệnh',
-                onTap: () {
-                  context.router.push(const HelpCenterRoute());
-                },
-                svgSrc: 'assets/icon/ic_google.svg',
-              ),
+                  feature: 'Quy trình hướng dẫn khám bệnh',
+                  onTap: () {
+                    context.router.push(const HelpCenterRoute());
+                  },
+                  icon: Icons.help_outline),
               ProfileItem(
                 feature: 'Thống kê dữ liệu Covid',
                 onTap: () {
                   context.router.push(const CovidDataPageRoute());
                 },
-                svgSrc: 'assets/icon/ic_google.svg',
+                icon: Icons.list_alt_outlined,
               ),
               ProfileItem(
                 feature: 'Đăng xuất',
                 onTap: () {
+                  EasyLoading.show(
+                    status: '...',
+                  );
+                  FirebaseAuth.instance.signOut();
+                  EasyLoading.showSuccess('Đăng xuất thành công',
+                      maskType: EasyLoadingMaskType.custom);
                   context.router.replace(const LoginPageRoute());
                 },
-                svgSrc: 'assets/icon/ic_google.svg',
+                icon: Icons.logout,
               ),
             ],
           ),

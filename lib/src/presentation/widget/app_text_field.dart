@@ -9,21 +9,25 @@ class AppTextField extends StatefulWidget {
     Key? key,
     this.obscureText = false,
     this.onChanged,
+    this.focusNode,
     this.validator,
     this.borderColor = AppColor.colorBlackBlue,
     this.errorColor,
     this.baseColor,
+    this.textInputType,
     required this.hint,
     this.controller,
     this.icon,
     this.textInputFormatter,
   }) : super(key: key);
   final String hint;
+  final FocusNode? focusNode;
   final TextEditingController? controller;
   final bool? obscureText;
   final Color? baseColor;
+  final TextInputType? textInputType;
   final Function? onChanged;
-  final Function? validator;
+  final ValueChanged<String>? validator;
   final Color borderColor;
   final Color? errorColor;
   final Widget? icon;
@@ -39,7 +43,6 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   void initState() {
     super.initState();
-    // currentColor = widget?.borderColor;
   }
 
   @override
@@ -49,9 +52,12 @@ class _AppTextFieldState extends State<AppTextField> {
       child: TextField(
         scrollPadding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom * 4),
+        onChanged: widget.validator,
         controller: widget.controller,
         inputFormatters: widget.textInputFormatter,
         obscuringCharacter: '*',
+        keyboardType: widget.textInputType,
+        focusNode: widget.focusNode,
         obscureText: widget.obscureText!, //show and disable pass
         decoration: InputDecoration(
           suffixIcon: widget.icon,

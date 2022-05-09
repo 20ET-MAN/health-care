@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
@@ -6,13 +7,14 @@ import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import '../../config/app_style.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.user}) : super(key: key);
+  final User user;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final bool isUser = true;
+  final bool isUser = false;
 
   final PageController _pageController = PageController();
 
@@ -20,14 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
     const HomePageRoute(),
     const BookingPageRoute(),
     NotificationPageRoute(),
-    const ProfilePageRoute()
+    ProfilePageRoute()
   ];
 
   final List<PageRouteInfo> _itemsAdmin = [
     const HomePageRoute(),
     BookingListAdminRoute(),
     NotificationPageRoute(),
-    const ProfilePageRoute()
+    ProfilePageRoute()
   ];
 
   final List<String> itemTitle = [

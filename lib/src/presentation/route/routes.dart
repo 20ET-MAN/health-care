@@ -11,6 +11,7 @@ import 'package:healthcare/src/presentation/screens/news_page/new_detail.dart';
 import 'package:healthcare/src/presentation/screens/notification_admin/notification_admin_page.dart';
 import 'package:healthcare/src/presentation/screens/notification_screen/notification_page.dart';
 import 'package:healthcare/src/presentation/screens/profile_screen/profile_page.dart';
+import 'package:healthcare/src/presentation/screens/profile_screen/user_profile_info.dart';
 import 'package:healthcare/src/presentation/screens/register/register_first.dart';
 import 'package:healthcare/src/presentation/screens/splash_screen.dart';
 import 'package:healthcare/src/presentation/screens/web_view/service_page.dart';
@@ -100,6 +101,10 @@ import '../screens/web_view/help_center.dart';
     AutoRoute(
       path: 'service_webView',
       page: HelpCenter,
+    ),
+    AutoRoute(
+      path: 'service_webView',
+      page: UserProfileInfo,
     ),
   ],
 )

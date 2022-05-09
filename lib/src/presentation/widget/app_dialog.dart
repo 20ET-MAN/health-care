@@ -18,7 +18,7 @@ class AppDialog {
       this.rightBtLabel = 'Oke',
       this.isShowLeftButton = false});
 
-  showMyDialog(BuildContext context) {
+  showMyDialog(BuildContext context) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {

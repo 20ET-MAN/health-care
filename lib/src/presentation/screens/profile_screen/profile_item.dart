@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../config/app_color.dart';
 import '../../config/app_style.dart';
@@ -7,12 +6,12 @@ import '../../config/app_style.dart';
 class ProfileItem extends StatelessWidget {
   const ProfileItem({
     Key? key,
-    required this.svgSrc,
+    required this.icon,
     required this.feature,
     required this.onTap,
   }) : super(key: key);
 
-  final String svgSrc;
+  final IconData icon;
   final String feature;
   final VoidCallback onTap;
 
@@ -35,9 +34,13 @@ class ProfileItem extends StatelessWidget {
               width: 40,
               decoration: BoxDecoration(
                 color: AppColor.colorOrange,
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: SvgPicture.asset(svgSrc),
+              child: //SvgPicture.asset(svgSrc),
+                  Icon(
+                icon,
+                color: AppColor.colorWhile,
+              ),
             ),
             const SizedBox(width: 15),
             Expanded(
