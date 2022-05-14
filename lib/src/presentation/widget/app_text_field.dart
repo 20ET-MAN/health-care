@@ -14,6 +14,7 @@ class AppTextField extends StatefulWidget {
     this.borderColor = AppColor.colorBlackBlue,
     this.errorColor,
     this.baseColor,
+    this.textCapitalization = TextCapitalization.none,
     this.textInputType,
     required this.hint,
     this.controller,
@@ -25,6 +26,7 @@ class AppTextField extends StatefulWidget {
   final TextEditingController? controller;
   final bool? obscureText;
   final Color? baseColor;
+  final TextCapitalization textCapitalization;
   final TextInputType? textInputType;
   final Function? onChanged;
   final ValueChanged<String>? validator;
@@ -50,6 +52,8 @@ class _AppTextFieldState extends State<AppTextField> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: TextField(
+        enableInteractiveSelection: true,
+        textCapitalization: widget.textCapitalization,
         scrollPadding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom * 4),
         onChanged: widget.validator,

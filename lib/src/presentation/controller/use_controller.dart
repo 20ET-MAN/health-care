@@ -1,24 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<void> userSetup(
-    {required String fullName,
-    required String typeUser,
-    required String userName,
-    required String dateOfBirth,
-    required String phoneNumber,
-    required String creationDate}) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  final users =
-      FirebaseFirestore.instance.collection('Users').doc(auth.currentUser?.uid);
-  users.set({
-    'fullName': fullName,
-    'userName': userName,
-    'typeUser': typeUser,
-    'dateOfBirth': dateOfBirth,
-    'phoneNumber': phoneNumber,
-    'creationDate': creationDate
-  });
+import '../../domain/entities/user_entity.dart';
 
-  return;
+class UserController {
+  Future<void> userSetup(
+      {required String fullName,
+      required String typeUser,
+      required String userName,
+      required String sex,
+      required String dateOfBirth,
+      required String phoneNumber,
+      required int userStatus,
+      required String creationDate}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    final users = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(auth.currentUser?.uid);
+    users.set({
+      'fullName': fullName,
+      'userName': userName,
+      'sex': sex,
+      'typeUser': typeUser,
+      'userStatus': userStatus,
+      'dateOfBirth': dateOfBirth,
+      'phoneNumber': phoneNumber,
+      'creationDate': creationDate
+    });
+    return;
+  }
+
+  Future<UserEntity> getCurrentUser() async {
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('Users');
+    final userData = UserEntity.fromDocument(await usersCollection
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get());
+    return userData;
+  }
 }

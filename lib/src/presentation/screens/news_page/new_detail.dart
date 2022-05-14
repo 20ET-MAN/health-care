@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
 
-import '../../../domain/entities/new_entity.dart';
+import '../../../domain/entities/news_entity.dart';
 
 class NewsDetail extends StatelessWidget {
   const NewsDetail({Key? key, required this.item}) : super(key: key);
 
-  final NewEntity item;
+  final NewEntity? item;
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +18,12 @@ class NewsDetail extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              item.title,
+              'item?.title.toString()',
               style: AppStyle().heading2,
             ),
             SizedBox(height: 20),
             Text(
-              item.description,
+              '   item.description',
               style: AppStyle().heading4,
             ),
           ],

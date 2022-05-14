@@ -3,9 +3,9 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:healthcare/src/presentation/config/app_color.dart';
-import 'package:healthcare/src/presentation/route/routes.gr.dart';
+import 'package:intl/intl.dart';
 
+import '../../config/app_color.dart';
 import '../../config/app_style.dart';
 import '../../controller/auth_service_controller.dart';
 import '../../controller/use_controller.dart';
@@ -13,42 +13,66 @@ import '../../controller/validator_controller.dart';
 import '../../widget/app_next_bt.dart';
 import '../../widget/app_text_field.dart';
 
-class RegisterFirst extends StatefulWidget {
-  const RegisterFirst({Key? key}) : super(key: key);
+class CreateUserPage extends StatefulWidget {
+  const CreateUserPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterFirst> createState() => _RegisterFirstState();
+  State<CreateUserPage> createState() => _CreateUserPageState();
 }
 
-class _RegisterFirstState extends State<RegisterFirst> {
+class _CreateUserPageState extends State<CreateUserPage> {
   final TextEditingController eMail = TextEditingController();
+
   final TextEditingController userName = TextEditingController();
+
   final TextEditingController passWord = TextEditingController();
+
   final TextEditingController confirmPassWord = TextEditingController();
+
   final TextEditingController fullName = TextEditingController();
+
   final TextEditingController dateOFBirth = TextEditingController();
+
   final TextEditingController phone = TextEditingController();
 
   final FocusNode _focusNodeEmail = FocusNode();
+
   final FocusNode _phone = FocusNode();
+
   final FocusNode _focusNodeUserName = FocusNode();
+
   final FocusNode _focusNodePassWord = FocusNode();
+
   final FocusNode _focusNodeConfirmPassWord = FocusNode();
+
   final FocusNode _fullName = FocusNode();
+
   final FocusNode _dateOfBirth = FocusNode();
+
   final GlobalKey _globalKey = GlobalKey();
+
   DateTime selectedDate = DateTime.now();
 
+  final List<String> userItems = [
+    'user',
+    'admin',
+  ];
   final List<String> sexItems = [
     'Nam',
     'Nữ',
   ];
+  String? selectedTypeUser;
   String? selectedSex;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.appColorBg,
+      appBar: AppBar(
+        backgroundColor: AppColor.colorWhile,
+        title: const Text('Tạo tài khoản'),
+        centerTitle: true,
+      ),
       body: GestureDetector(
         onTap: () {
           unFocus();
@@ -58,18 +82,14 @@ class _RegisterFirstState extends State<RegisterFirst> {
             width: double.infinity,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: Form(
                   key: _globalKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 100),
-                      Text(
-                        'Sign Up',
-                        style: AppStyle().heading2.copyWith(fontSize: 30),
-                      ),
-                      const SizedBox(height: 70),
+                      //const SizedBox(height: 20),
                       Row(
                         children: [
                           Text(
@@ -127,8 +147,10 @@ class _RegisterFirstState extends State<RegisterFirst> {
                               controller: dateOFBirth,
                               focusNode: _dateOfBirth,
                               decoration: InputDecoration(
-                                suffixIcon:
-                                    const Icon(Icons.calendar_today_outlined),
+                                suffixIcon: const Icon(
+                                  Icons.calendar_today_outlined,
+                                  color: AppColor.colorOrange,
+                                ),
                                 contentPadding: const EdgeInsets.all(20),
                                 filled: true,
                                 fillColor: AppColor.colorWhile,
@@ -145,38 +167,6 @@ class _RegisterFirstState extends State<RegisterFirst> {
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text(
-                            'Phone',
-                            style: AppStyle().heading2.copyWith(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      AppTextField(
-                        hint: 'Phone',
-                        textInputType: TextInputType.phone,
-                        controller: phone,
-                        focusNode: _phone,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text(
-                            'User name',
-                            style: AppStyle().heading2.copyWith(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      AppTextField(
-                        textCapitalization: TextCapitalization.words,
-                        hint: 'User name',
-                        controller: userName,
-                        focusNode: _focusNodeUserName,
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -244,6 +234,100 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       Row(
                         children: [
                           Text(
+                            'Phone',
+                            style: AppStyle().heading2.copyWith(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      AppTextField(
+                        hint: 'Phone',
+                        textInputType: TextInputType.phone,
+                        controller: phone,
+                        focusNode: _phone,
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text(
+                            'User name',
+                            style: AppStyle().heading2.copyWith(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      AppTextField(
+                        textCapitalization: TextCapitalization.words,
+                        hint: 'User name',
+                        controller: userName,
+                        focusNode: _focusNodeUserName,
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text(
+                            'Loại tài khoản',
+                            style: AppStyle().heading2.copyWith(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: AppColor.colorWhile,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: DropdownButtonFormField2(
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide.none),
+                          ),
+                          isExpanded: true,
+                          hint: const Text(
+                            'Loại tài khoản',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: AppColor.colorOrange,
+                          ),
+                          iconSize: 30,
+                          buttonHeight: 60,
+                          buttonPadding:
+                              const EdgeInsets.only(left: 20, right: 10),
+                          dropdownDecoration: BoxDecoration(
+                            color: AppColor.colorOrange,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          items: userItems
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select gender.';
+                            }
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              selectedTypeUser = value.toString();
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text(
                             'Password',
                             style: AppStyle().heading2.copyWith(fontSize: 14),
                           ),
@@ -287,32 +371,17 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       const SizedBox(height: 30),
                       AppNextBt(
                         onPressed: () async {
-                          if ((selectedSex ?? '').isEmpty) {
+                          if ((selectedTypeUser ?? '').isEmpty) {
+                            EasyLoading.showError(
+                                'Loại tài khoản là trường bắt buộc');
+                          } else if ((selectedSex ?? '').isEmpty) {
                             EasyLoading.showError(
                                 'Giới tính là trường bắt buộc');
                           } else {
                             createUser();
                           }
                         },
-                        label: 'Sign Up',
-                      ),
-                      const SizedBox(height: 30),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Already have an Account? ',
-                                style: AppStyle().heading4),
-                            GestureDetector(
-                              onTap: () {
-                                context.router.push(const LoginPageRoute());
-                              },
-                              child: Text('Login', style: AppStyle().heading3),
-                            ),
-                          ],
-                        ),
+                        label: 'Thêm tài khoản',
                       ),
                       const SizedBox(height: 50),
                     ],
@@ -343,42 +412,42 @@ class _RegisterFirstState extends State<RegisterFirst> {
       EasyLoading.showError('Tên tài khoản phải có 4 -32 kí tự');
     } else if (dateOFBirth.text.isEmpty) {
       EasyLoading.showError('Vui lòng chọn ngày sinh');
-    } else if (phone.text.trim().length < 10 || phone.text.length > 10) {
+    } else if (phone.text.length < 10 || phone.text.length > 10) {
       EasyLoading.showError('Số điện thoại không đúng định dạng');
     } else {
       final user = await AuthServiceController.registerUsingEmailPassword(
-          email: eMail.text.trim(),
-          password: passWord.text.trim(),
+          email: eMail.text,
+          password: passWord.text,
           confirmPassword: confirmPassWord.text);
       if (user != null) {
         UserController().userSetup(
             userName: userName.text,
             sex: selectedSex ?? 'nam',
             dateOfBirth: dateOFBirth.text,
-            typeUser: 'user',
-            fullName: fullName.text,
-            creationDate: DateTime.now().toString(),
-            phoneNumber: phone.text.trim(),
+            typeUser: selectedTypeUser ?? 'user',
+            fullName: fullName.text.toUpperCase(),
+            creationDate: DateFormat.yMd().format(DateTime.now()),
+            phoneNumber: phone.text,
             userStatus: 0);
         EasyLoading.showSuccess('Đăng kí thành công',
             maskType: EasyLoadingMaskType.custom);
-        context.router.replace(const LoginPageRoute());
+        context.router.pop();
       }
     }
   }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2200));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1901, 1),
+      lastDate: DateTime.now(),
+    );
     if (picked != null && picked != selectedDate) {
       setState(
         () {
           selectedDate = picked;
-          String convertedDateTime =
-              "${picked.year.toString()}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+          String convertedDateTime = DateFormat.yMd().format(selectedDate);
           dateOFBirth.value = TextEditingValue(text: convertedDateTime);
         },
       );

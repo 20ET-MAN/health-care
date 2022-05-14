@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
-import 'package:healthcare/src/presentation/controller/validator_controller.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:healthcare/src/presentation/widget/app_icon_bt.dart';
 import 'package:healthcare/src/presentation/widget/app_next_bt.dart';
@@ -118,11 +117,9 @@ class _LoginPageState extends State<LoginPage> {
                               hint: 'Your email or phone',
                               textInputFormatter: [
                                 FilteringTextInputFormatter.deny(
-                                    RegExp(r'[/\\á-ú Á-Ú|]+-!?><"{}*%^&$#')),
+                                    RegExp(r'[/\\á-ú Á-Ú|] +-!?><"{}*%^&$#')),
                               ],
                               controller: _emailController,
-                              validator: (value) =>
-                                  Validator.validateEmail(email: value),
                             ),
                             const SizedBox(height: 10),
                             Row(
@@ -142,8 +139,6 @@ class _LoginPageState extends State<LoginPage> {
                                     RegExp(r'[/\\á-ú Á-Ú|]')),
                               ],
                               controller: _passWordController,
-                              validator: (value) =>
-                                  Validator.validatePassword(password: value),
                               hint: 'Password',
                               focusNode: focusNodePassword,
                               obscureText: _obscured,
@@ -164,8 +159,8 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () async {
                                 User? user = await AuthServiceController
                                     .signInUsingEmailPassword(
-                                  email: _emailController.text,
-                                  password: _passWordController.text,
+                                  email: _emailController.text.trim(),
+                                  password: _passWordController.text.trim(),
                                   typeUser: "err",
                                 );
                                 if (user != null) {
@@ -173,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                                       'Đăng nhập thành công',
                                       maskType: EasyLoadingMaskType.custom);
                                   context.router.replace(
-                                    HomeScreenRoute(user: user),
+                                    const HomeScreenRoute(),
                                   );
                                 }
                               },
@@ -201,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                                   GestureDetector(
                                     onTap: () {
                                       context.router
-                                          .replace(RegisterFirstRoute());
+                                          .replace(const RegisterFirstRoute());
                                     },
                                     child: Text('Sign up',
                                         style: AppStyle().heading3),

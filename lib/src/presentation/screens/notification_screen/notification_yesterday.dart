@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:healthcare/src/domain/entities/notification_entity.dart';
 
 import '../../config/app_color.dart';
@@ -35,7 +34,10 @@ class NotificationYesterday extends StatelessWidget {
                   color: AppColor.colorOrange,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: SvgPicture.asset(item[index].assetName),
+                child: const Icon(
+                  Icons.notifications_active,
+                  color: AppColor.colorWhile,
+                ),
               ),
               const SizedBox(width: 15),
               Expanded(

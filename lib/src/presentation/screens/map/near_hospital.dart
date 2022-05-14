@@ -5,9 +5,16 @@ class NearHospital extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      color: Colors.green,
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          Container(
+            height: 300,
+            color: Colors.green,
+          )
+        ],
+      ),
     );
   }
 }

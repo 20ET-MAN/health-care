@@ -47,6 +47,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: const MyApp(),
+      supportedLocales: const [
+        Locale("en"),
+        Locale("vn"),
+      ],
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );

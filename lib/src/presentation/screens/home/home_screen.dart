@@ -1,36 +1,52 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healthcare/src/domain/entities/user_entity.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
+import 'package:healthcare/src/presentation/controller/booking_controller.dart';
+import 'package:healthcare/src/presentation/controller/use_controller.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 
 import '../../config/app_style.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.user}) : super(key: key);
-  final User user;
+  const HomeScreen({Key? key}) : super(key: key);
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final bool isUser = false;
+  _HomeScreenState({this.typeCurrentUser});
 
-  final PageController _pageController = PageController();
+  @override
+  void initState() {
+    getTypeUser();
+    getList();
+    super.initState();
+  }
 
   final List<PageRouteInfo> _itemsUser = [
     const HomePageRoute(),
-    const BookingPageRoute(),
+    BookingPageRoute(),
     NotificationPageRoute(),
-    ProfilePageRoute()
+    const ProfilePageRoute()
   ];
 
   final List<PageRouteInfo> _itemsAdmin = [
     const HomePageRoute(),
     BookingListAdminRoute(),
     NotificationPageRoute(),
-    ProfilePageRoute()
+    const ProfilePageRoute()
   ];
+  UserEntity? typeCurrentUser;
+
+  Future<UserEntity?> getTypeUser() async {
+    final typeUser =
+        await UserController().getCurrentUser().then((value) => value);
+    setState(() {
+      typeCurrentUser = typeUser;
+    });
+    return typeCurrentUser;
+  }
 
   final List<String> itemTitle = [
     'Trang chủ',
@@ -39,8 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
     'Thông tin cá nhân'
   ];
 
-  void onItemTap(int selectedIndex) {
-    _pageController.jumpToPage(selectedIndex);
+  List<PageRouteInfo> getList() {
+    if (typeCurrentUser?.typeUser == 'user') {
+      return _itemsUser;
+    } else {
+      return _itemsAdmin;
+    }
   }
 
   @override
@@ -58,14 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          BookingController().getBooking();
+        },
         backgroundColor: AppColor.colorOrange,
         child: const Icon(
           Icons.message_outlined,
           color: AppColor.colorWhile,
         ),
       ),
-      routes: isUser ? _itemsUser : _itemsAdmin,
+      routes: getList(),
       bottomNavigationBuilder: (_, tabRouter) {
         return BottomNavigationBar(
           backgroundColor: AppColor.colorWhile,
@@ -78,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            isUser
+            (typeCurrentUser?.typeUser == 'user')
                 ? const BottomNavigationBarItem(
                     icon: Icon(Icons.perm_contact_calendar),
                     label: 'Booking',

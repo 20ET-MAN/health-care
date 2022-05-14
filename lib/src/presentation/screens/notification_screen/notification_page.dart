@@ -10,32 +10,36 @@ class NotificationPage extends StatefulWidget {
   NotificationPage({Key? key}) : super(key: key);
 
   final List<NotificationEntity> notificationToday = [
-    NotificationEntity('assets/icon/ic_google.svg', 'titleToday1', 'content'),
-    NotificationEntity('assets/icon/ic_google.svg', 'titleToday2', 'content'),
-    NotificationEntity('assets/icon/ic_google.svg', 'titleToday3', 'content'),
-    NotificationEntity('assets/icon/ic_google.svg', 'titleToday4', 'content'),
+    NotificationEntity(
+        'assets/icon/ic_google.svg',
+        'Dịch vụ khám bệnh công nghệ mới',
+        'Bệnh viện đa khoa a với truyền thống lâu đời'),
+    NotificationEntity(
+        'assets/icon/ic_google.svg',
+        'Chào mừng kỉ niệm thành lập',
+        'Bệnh viện đa khoa a với tđờiền thống lâu đời'),
   ];
 
   final List<NotificationEntity> notificationYesterday = [
     NotificationEntity(
-        'assets/icon/ic_google.svg', 'titleYesterday1', 'contentToday'),
+        'assets/icon/ic_google.svg',
+        'Chào mừng kỉ niệm thành lập ',
+        'Bệnh viện đa khoa a với truyền thống lâu đời'),
     NotificationEntity(
-        'assets/icon/ic_google.svg', 'titleYesterday2', 'contentToday'),
-    NotificationEntity(
-        'assets/icon/ic_google.svg', 'titleYesterday3', 'contentToday'),
-    NotificationEntity(
-        'assets/icon/ic_google.svg', 'titleYesterday4', 'contentToday'),
+        'assets/icon/ic_google.svg',
+        'Dịch vụ khám bệnh thiện nguyện',
+        'Áp dụng dịch vụ khám bệnh dựa trên công nghệ mới '),
   ];
 
   final List<NotificationEntity> notificationOther = [
     NotificationEntity(
-        'assets/icon/ic_google.svg', 'notificationOther1', 'contentToday1'),
+        'assets/icon/ic_google.svg',
+        'Thủ tục khám bệnh kiểu mới',
+        'Bệnh viện thông báo hìnhmớiức khám bệnh mới'),
     NotificationEntity(
-        'assets/icon/ic_google.svg', 'notificationOther2', 'contentToday2'),
-    NotificationEntity(
-        'assets/icon/ic_google.svg', 'notificationOther3', 'contentToday3'),
-    NotificationEntity(
-        'assets/icon/ic_google.svg', 'notificationOther4', 'contentToday4'),
+        'assets/icon/ic_google.svg',
+        'Thông báo tình hình dịch covid 2022',
+        'Tình hình dịch bệnh đã cơ bản được kiểm soát'),
   ];
 
   @override

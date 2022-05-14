@@ -99,17 +99,6 @@ class AuthServiceController extends ChangeNotifier {
     return await _firebaseAuth.currentUser;
   }
 
-/*  static Future updateUserName(
-    String name,
-  ) async {
-    auth.FirebaseAuth.instance.currentUser?.updateDisplayName(name);
-    auth.FirebaseAuth.instance.currentUser?.reload();
-  }*/
-
-/*  static Future<dynamic> loadUser(UserEntity? user) async {
-    return await FirebaseStorage.instance.ref().child(user).getDownloadURL();
-  }*/
-
   static Future<User?> refreshUser(User user) async {
     FirebaseAuth auth = FirebaseAuth.instance;
 

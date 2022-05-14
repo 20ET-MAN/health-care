@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:healthcare/src/domain/entities/doctor.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
+
+import '../../../domain/entities/doctor_entity.dart';
 
 class DoctorDetail extends StatelessWidget {
   const DoctorDetail({Key? key, required this.doctorEntity}) : super(key: key);
@@ -13,22 +14,21 @@ class DoctorDetail extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.appColorBg,
       appBar: AppBar(
-        title: Text(
-          'Bác sĩ',
-          style: AppStyle().heading2,
-        ),
+        backgroundColor: AppColor.colorWhile,
+        title: const Text('Thông tin bác sĩ'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 200,
+                height: 500,
                 width: double.infinity,
                 child: Image.network(
-                  'https://image.thanhnien.vn/w2048/Uploaded/2022/tnabtw/2022_02_14/doctor-strange-2-8873.jpg',
+                  doctorEntity.imageUrl,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -39,22 +39,31 @@ class DoctorDetail extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    doctorEntity.name,
+                    doctorEntity.fullName,
                     style: AppStyle().heading2,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   Text(
-                    'Tuổi: ${doctorEntity.age.toString()}',
+                    'Năm sinh: ${doctorEntity.dateOfBirth.toString()}',
                     style: AppStyle().heading4,
                   ),
                   Text(
-                    'Số năm kinh nghiệm: ${doctorEntity.exp}',
+                    'Giới tính: ${doctorEntity.sex.toString()}',
+                    style: AppStyle().heading4,
+                  ),
+                  Text(
+                    'Chức vụ: ${doctorEntity.rank}',
+                    style: AppStyle().heading4,
+                  ),
+                  Text(
+                    'Chuyên khoa: ${doctorEntity.departments}',
                     style: AppStyle().heading4,
                   ),
                   Text(
                     'Mô tả:\n${doctorEntity.description}',
                     style: AppStyle().heading4,
                   ),
+                  const SizedBox(height: 30),
                 ],
               ),
             ],

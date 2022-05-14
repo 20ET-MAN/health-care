@@ -14,7 +14,7 @@ class HomePageGridItem extends StatefulWidget {
       'Test Covid',
       'Đăng kí test covid tại nhà, tại bệnh viện',
       'assets/icon/ic_covid.png',
-      const HomePageRoute(),
+      const NearHospitalRoute(),
     ),
     ServiceItemEntity(
       'Dịch vụ khám',
@@ -41,9 +41,7 @@ class HomePageGridItem extends StatefulWidget {
 }
 
 class _HomePageGridItemState extends State<HomePageGridItem> {
-  // set an int with value -1 since no card has been selected
   int selectedCard = 0;
-  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +61,6 @@ class _HomePageGridItemState extends State<HomePageGridItem> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
-            //EasyLoading.show(status: 'Vui lòng đợi.....', dismissOnTap: true, d);
             setState(
               () {
                 context.router.push(widget.item[index].screen);
