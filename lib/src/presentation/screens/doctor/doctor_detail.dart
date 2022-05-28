@@ -27,10 +27,13 @@ class DoctorDetail extends StatelessWidget {
               SizedBox(
                 height: 500,
                 width: double.infinity,
-                child: Image.network(
-                  doctorEntity.imageUrl,
-                  fit: BoxFit.fill,
-                ),
+                child: doctorEntity.imageUrl == ''
+                    ? Image.network(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9EXGE4pl-nm5WuxE6YJT2B3wFodTHkDD8dg&usqp=CAU')
+                    : Image.network(
+                        doctorEntity.imageUrl.toString(),
+                        fit: BoxFit.fill,
+                      ),
               ),
               const SizedBox(
                 height: 30,
@@ -39,7 +42,7 @@ class DoctorDetail extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    doctorEntity.fullName,
+                    doctorEntity.fullName.toString(),
                     style: AppStyle().heading2,
                   ),
                   const SizedBox(height: 15),

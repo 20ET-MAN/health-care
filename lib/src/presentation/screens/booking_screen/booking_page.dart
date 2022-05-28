@@ -435,7 +435,7 @@ class _BookingPageState extends State<BookingPage> {
     } else if (phone.text.length < 10 || phone.text.length > 10) {
       EasyLoading.showError('Số điện thoại ko hợp lệ');
     } else {
-      BookingController().userSetup(
+      BookingController().createBookingList(
         fullName: fullName.text,
         dateOfBirth: dateOFBirth.text,
         sex: selectedSex ?? 'nam',

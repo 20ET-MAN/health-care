@@ -80,15 +80,15 @@ class _BookingListUserState extends State<BookingListUser> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    itemBookingList![index].typeService,
+                                    itemBookingList?[index].typeService ?? '',
                                     style: AppStyle().heading2,
                                   ),
                                   Text(
-                                    'Họ tên: ${itemBookingList![index].fullName}',
+                                    'Họ tên: ${itemBookingList?[index].fullName ?? ''}',
                                     style: AppStyle().heading4,
                                   ),
                                   Text(
-                                      'Hẹn khám ngày: ${itemBookingList![index].bookingDate}'),
+                                      'Hẹn khám ngày: ${itemBookingList?[index].bookingDate ?? ''}'),
                                 ],
                               ),
                             ),

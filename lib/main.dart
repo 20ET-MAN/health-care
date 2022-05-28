@@ -21,7 +21,20 @@ void main() async {
   runApp(
     const App(),
   );
+  //configLocalNotification();
 }
+
+/*final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+void configLocalNotification() {
+  AndroidInitializationSettings initializationSettingsAndroid =
+      const AndroidInitializationSettings('@mipmap/ic_launcher');
+  IOSInitializationSettings initializationSettingsIOS =
+      const IOSInitializationSettings();
+  InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  flutterLocalNotificationsPlugin.initialize(initializationSettings);
+}*/
 
 void configLoading() {
   EasyLoading.instance

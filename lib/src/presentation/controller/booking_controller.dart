@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:healthcare/src/domain/entities/booking_entity.dart';
 
 class BookingController {
-  Future<void> userSetup(
+  Future<void> createBookingList(
       {required String fullName,
       required String dateOfBirth,
       required String sex,

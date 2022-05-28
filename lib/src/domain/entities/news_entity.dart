@@ -1,24 +1,37 @@
-class NewEntity {
-  final String id;
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class NewsEntity {
+  final String author;
+  final String contentBottom;
+  final String contentCenter;
+  final String contentTop;
+  final String description;
+  final String thumbnailBottom;
+  final String thumbnailCenter;
+  final String thumbnailTop;
   final String title;
-  final String content1;
-  final String content2;
-  final String imageContent1;
-  final String imageContent2;
 
-  NewEntity(
-      {required this.id,
-      required this.title,
-      required this.content1,
-      required this.content2,
-      required this.imageContent1,
-      required this.imageContent2});
+  NewsEntity(
+      {required this.author,
+      required this.contentBottom,
+      required this.contentCenter,
+      required this.contentTop,
+      required this.description,
+      required this.thumbnailBottom,
+      required this.thumbnailCenter,
+      required this.thumbnailTop,
+      required this.title});
 
-  factory NewEntity.fromJson(Map<String, dynamic> json) => NewEntity(
-      id: json['id'],
-      title: json['title'],
-      content1: json['content1'],
-      content2: json['content2'],
-      imageContent1: json['imageContent1'],
-      imageContent2: json['imageContent2']);
+  factory NewsEntity.fromDocumentSnapshot(
+          DocumentSnapshot<Map<String, dynamic>> json) =>
+      NewsEntity(
+          author: json['author'],
+          contentBottom: json['contentBottom'],
+          contentCenter: json['contentCenter'],
+          contentTop: json['contentTop'],
+          description: json['description'],
+          thumbnailBottom: json['thumbnailBottom'],
+          thumbnailCenter: json['thumbnailCenter'],
+          thumbnailTop: json['thumbnailTop'],
+          title: json['title']);
 }

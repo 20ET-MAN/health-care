@@ -28,11 +28,14 @@ class UserProfileInfo extends StatelessWidget {
                 height: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  image: const DecorationImage(
-                      image: NetworkImage(
-                        'https://i.pinimg.com/originals/c3/01/81/c30181f2d8e826582394d6d36e2dfc30.jpg',
-                      ),
-                      fit: BoxFit.cover),
+                  image: user.image != ''
+                      ? DecorationImage(
+                          image: NetworkImage(
+                            user.image,
+                          ),
+                          fit: BoxFit.cover)
+                      : const DecorationImage(
+                          image: AssetImage('assets/icon/ic_doctor.png')),
                 ),
               ),
               const SizedBox(height: 10),

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
+import 'package:intl/intl.dart';
 
 import '../../config/app_style.dart';
 import '../../controller/auth_service_controller.dart';
@@ -80,10 +81,15 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       ),
                       const SizedBox(height: 10),
                       AppTextField(
+                        textCapitalization: TextCapitalization.words,
                         textInputType: TextInputType.emailAddress,
                         focusNode: _focusNodeEmail,
                         hint: 'Your email or phone',
                         controller: eMail,
+                        textInputFormatter: [
+                          FilteringTextInputFormatter.deny(
+                              RegExp(r'[/\á-úÁ-Ú|+{}*%^&$#_ ]')),
+                        ],
                         validator: (value) =>
                             Validator.validateEmail(email: value),
                       ),
@@ -98,7 +104,11 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       const SizedBox(height: 10),
                       AppTextField(
                         textCapitalization: TextCapitalization.words,
-                        hint: 'Full name',
+                        hint: 'Họ và tên',
+                        textInputFormatter: [
+                          FilteringTextInputFormatter.deny(
+                              RegExp(r'[0-9|{}()?><@#$%^&]')),
+                        ],
                         controller: fullName,
                         focusNode: _fullName,
                       ),
@@ -132,7 +142,7 @@ class _RegisterFirstState extends State<RegisterFirst> {
                                 contentPadding: const EdgeInsets.all(20),
                                 filled: true,
                                 fillColor: AppColor.colorWhile,
-                                hintText: "Date of birth",
+                                hintText: "Ngày sinh",
                                 hintStyle: AppStyle()
                                     .heading4
                                     .copyWith(color: AppColor.colorGrey),
@@ -157,8 +167,11 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       ),
                       const SizedBox(height: 10),
                       AppTextField(
-                        hint: 'Phone',
+                        hint: 'Số điện thoại',
                         textInputType: TextInputType.phone,
+                        textInputFormatter: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        ],
                         controller: phone,
                         focusNode: _phone,
                       ),
@@ -174,7 +187,7 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       const SizedBox(height: 10),
                       AppTextField(
                         textCapitalization: TextCapitalization.words,
-                        hint: 'User name',
+                        hint: 'Tên tài khoản',
                         controller: userName,
                         focusNode: _focusNodeUserName,
                       ),
@@ -182,7 +195,7 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       Row(
                         children: [
                           Text(
-                            'Giới tính',
+                            'Sex',
                             style: AppStyle().heading2.copyWith(fontSize: 14),
                           ),
                         ],
@@ -240,7 +253,7 @@ class _RegisterFirstState extends State<RegisterFirst> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
                           Text(
@@ -252,12 +265,12 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       const SizedBox(height: 10),
                       AppTextField(
                         focusNode: _focusNodePassWord,
-                        hint: 'Password',
+                        hint: 'Mật khẩu',
                         obscureText: true,
                         controller: passWord,
                         textInputFormatter: [
                           FilteringTextInputFormatter.deny(
-                              RegExp(r'[/\\á-ú Á-Ú|]')),
+                              RegExp(r'[/\\á-ú Á-Ú| ]')),
                         ],
                         validator: (value) =>
                             Validator.validatePassword(password: value),
@@ -273,13 +286,13 @@ class _RegisterFirstState extends State<RegisterFirst> {
                       ),
                       const SizedBox(height: 10),
                       AppTextField(
-                        hint: 'Confirm Password',
+                        hint: 'Xác nhận mật khẩu',
                         controller: confirmPassWord,
                         obscureText: true,
                         focusNode: _focusNodeConfirmPassWord,
                         textInputFormatter: [
                           FilteringTextInputFormatter.deny(
-                              RegExp(r'[/\\á-ú Á-Ú|]')),
+                              RegExp(r'[/\\á-ú Á-Ú| ]')),
                         ],
                         validator: (value) =>
                             Validator.validatePassword(password: value),
@@ -359,10 +372,11 @@ class _RegisterFirstState extends State<RegisterFirst> {
             fullName: fullName.text,
             creationDate: DateTime.now().toString(),
             phoneNumber: phone.text.trim(),
-            userStatus: 0);
+            userStatus: 0,
+            images: '');
         EasyLoading.showSuccess('Đăng kí thành công',
             maskType: EasyLoadingMaskType.custom);
-        context.router.replace(const LoginPageRoute());
+        context.router.replace(const RegisterEndRoute());
       }
     }
   }
@@ -372,13 +386,12 @@ class _RegisterFirstState extends State<RegisterFirst> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2200));
+        lastDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(
         () {
           selectedDate = picked;
-          String convertedDateTime =
-              "${picked.year.toString()}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+          String convertedDateTime = DateFormat.yMd().format(selectedDate);
           dateOFBirth.value = TextEditingValue(text: convertedDateTime);
         },
       );

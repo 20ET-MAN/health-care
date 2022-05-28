@@ -1,5 +1,5 @@
 name: healthcare
-description: A new Flutter project.
+description: A  Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -24,7 +24,7 @@ environment:
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
 # dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
+# the latest version available on pub.dev. To see which dependencies have er
 # versions available, run `flutter pub outdated`.
 dependencies:
   build_runner:
@@ -82,6 +82,13 @@ dependencies:
   file_picker: ^4.5.1
   dropdown_button2: ^1.4.0
   google_maps_flutter: ^2.1.5
+  geolocator: ^8.2.1
+  shared_preferences: ^2.0.15
+  http: ^0.13.4
+  image_picker: ^0.8.5+3
+  image_cropper: ^2.0.3
+  flutter_local_notifications: ^9.5.3+1
+  firebase_messaging: ^11.4.0
 
 
 dev_dependencies:

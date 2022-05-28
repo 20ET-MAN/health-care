@@ -5,9 +5,10 @@ import 'package:healthcare/src/presentation/controller/news_controller.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 
 import '../../../domain/entities/news_entity.dart';
+import '../../config/app_color.dart';
 
 class NewsItem extends StatefulWidget {
-  NewsItem({Key? key}) : super(key: key);
+  const NewsItem({Key? key}) : super(key: key);
 
   @override
   State<NewsItem> createState() => _NewsItemState();
@@ -15,41 +16,89 @@ class NewsItem extends StatefulWidget {
 
 class _NewsItemState extends State<NewsItem> {
   NewsController newsController = NewsController();
-  List<NewEntity>? itemNews;
+  Future<List<NewsEntity>>? employeeList;
+  List<NewsEntity>? newsList;
 
-  Future<void> getListNews() async {
-    //itemNews = await NewsController().fetchNews();
+  Future<void> _initRetrieval() async {
+    employeeList = newsController.getNews();
+    newsList = await newsController.getNews();
   }
 
   @override
   void initState() {
-    getListNews();
+    _initRetrieval();
+    setState(() {
+      newsList;
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: itemNews?.length,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: () {
-            context.router.push(NewsDetailRoute(item: itemNews![index]));
-          },
-          child: Card(
-            margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-            child: ListTile(
-              title: Text(
-                itemNews![index].title,
-                style: AppStyle().heading2,
-              ),
-              subtitle:
-                  Text(itemNews![index].content1, style: AppStyle().heading2),
-            ),
-          ),
-        );
+    return FutureBuilder(
+      future: employeeList,
+      builder: (context, snapShot) {
+        if (snapShot.hasData) {
+          return ListView.builder(
+            itemCount: newsList?.length,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  context.router.push(NewsDetailRoute(item: newsList?[index]));
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  padding: const EdgeInsets.all(15),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColor.colorWhile,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: AppColor.colorOrange,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Image.network(
+                          newsList?[index].thumbnailTop ?? '',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              newsList?[index].title ?? '',
+                              style: AppStyle().heading2,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              newsList?[index].description ?? '',
+                              style: AppStyle().heading6,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
       },
     );
   }

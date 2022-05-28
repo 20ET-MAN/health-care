@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
 import 'package:healthcare/src/presentation/screens/home/home_page_item.dart';
+import 'package:healthcare/src/presentation/screens/news_page/news_item.dart';
 import 'package:healthcare/src/presentation/widget/app_next_bt.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -92,10 +93,8 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(
                   //color: AppColor.colorBlackBlue,
-                  height: 660,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ) //NewsItem(),
+                  height: 700,
+                  child: Center(child: NewsItem()) //NewsItem(),
                   ),
               const SizedBox(height: 20),
               const Divider(

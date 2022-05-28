@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../config/app_color.dart';
@@ -63,6 +68,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
   ];
   String? selectedTypeUser;
   String? selectedSex;
+  File? _image;
+  final imagePicker = ImagePicker();
+  String? downloadURL;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +97,56 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      //const SizedBox(height: 20),
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColor.colorOrange.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        height: 400,
+                        width: double.infinity,
+                        child: _image != null
+                            ? Image.file(
+                                _image!,
+                                fit: BoxFit.fill,
+                              )
+                            : Image.asset(
+                                'assets/icon/ic_doctor.png',
+                                color: AppColor.colorWhile,
+                              ),
+                      ),
+                      const SizedBox(height: 20),
+                      OutlinedButton(
+                        style: ButtonStyle(
+                            side: MaterialStateProperty.all(const BorderSide(
+                                color: AppColor.colorOrange,
+                                width: 1.0,
+                                style: BorderStyle.solid))),
+                        onPressed: () {
+                          _showPickOptionsDialog(context);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Chọn ảnh',
+                              style: AppStyle().heading3,
+                            ),
+                            const SizedBox(width: 10),
+                            const Align(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Icon(
+                                  Icons.search_off,
+                                  color: AppColor.colorOrange,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
                           Text(
@@ -119,6 +176,10 @@ class _CreateUserPageState extends State<CreateUserPage> {
                       AppTextField(
                         textCapitalization: TextCapitalization.words,
                         hint: 'Full name',
+                        textInputFormatter: [
+                          FilteringTextInputFormatter.deny(
+                              RegExp(r'[0-9|{}()?><@#$%^&]')),
+                        ],
                         controller: fullName,
                         focusNode: _fullName,
                       ),
@@ -243,6 +304,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
                       AppTextField(
                         hint: 'Phone',
                         textInputType: TextInputType.phone,
+                        textInputFormatter: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9 ]')),
+                        ],
                         controller: phone,
                         focusNode: _phone,
                       ),
@@ -341,7 +405,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                         controller: passWord,
                         textInputFormatter: [
                           FilteringTextInputFormatter.deny(
-                              RegExp(r'[/\\á-ú Á-Ú|]')),
+                              RegExp(r'[/\\á-ú Á-Ú| ]')),
                         ],
                         validator: (value) =>
                             Validator.validatePassword(password: value),
@@ -363,7 +427,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                         focusNode: _focusNodeConfirmPassWord,
                         textInputFormatter: [
                           FilteringTextInputFormatter.deny(
-                              RegExp(r'[/\\á-ú Á-Ú|]')),
+                              RegExp(r'[/\\á-ú Á-Ú| ]')),
                         ],
                         validator: (value) =>
                             Validator.validatePassword(password: value),
@@ -377,8 +441,10 @@ class _CreateUserPageState extends State<CreateUserPage> {
                           } else if ((selectedSex ?? '').isEmpty) {
                             EasyLoading.showError(
                                 'Giới tính là trường bắt buộc');
+                          } else if (_image == null) {
+                            EasyLoading.showError('Vui lòng chọn ảnh');
                           } else {
-                            createUser();
+                            createUser(_image!);
                           }
                         },
                         label: 'Thêm tài khoản',
@@ -405,7 +471,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
     _phone.unfocus();
   }
 
-  Future<void> createUser() async {
+  Future<void> createUser(File _image) async {
     if (fullName.text.length < 8 || fullName.text.length > 32) {
       EasyLoading.showError('Họ Tên tài khoản phải có 8 -32 kí tự');
     } else if (userName.text.length < 6 || userName.text.length > 32) {
@@ -419,6 +485,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
           email: eMail.text,
           password: passWord.text,
           confirmPassword: confirmPassWord.text);
+
+      Reference reference = FirebaseStorage.instance
+          .ref()
+          .child('$currentUserId/images')
+          .child('post_$currentUserId');
+      await reference.putFile(_image);
+      downloadURL = await reference.getDownloadURL();
       if (user != null) {
         UserController().userSetup(
             userName: userName.text,
@@ -426,10 +499,12 @@ class _CreateUserPageState extends State<CreateUserPage> {
             dateOfBirth: dateOFBirth.text,
             typeUser: selectedTypeUser ?? 'user',
             fullName: fullName.text.toUpperCase(),
+            images: downloadURL ?? '',
             creationDate: DateFormat.yMd().format(DateTime.now()),
             phoneNumber: phone.text,
             userStatus: 0);
-        EasyLoading.showSuccess('Đăng kí thành công',
+        setState(() {});
+        EasyLoading.showSuccess('Thêm thành công',
             maskType: EasyLoadingMaskType.custom);
         context.router.pop();
       }
@@ -453,4 +528,44 @@ class _CreateUserPageState extends State<CreateUserPage> {
       );
     }
   }
+
+  Future imagePickerMethod(ImageSource source) async {
+    final pick = await imagePicker.pickImage(source: source);
+    setState(() {
+      if (pick != null) {
+        _image = File(pick.path);
+      } else {
+        EasyLoading.showError('Không có ảnh được chọn');
+      }
+    });
+  }
+
+  void _showPickOptionsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              title: const Text('Chọn ảnh từ thư viện'),
+              onTap: () {
+                imagePickerMethod(ImageSource.gallery);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Chụp ảnh'),
+              onTap: () {
+                imagePickerMethod(ImageSource.camera);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  final currentUserId = FirebaseAuth.instance.currentUser?.uid;
 }

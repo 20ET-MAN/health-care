@@ -42,8 +42,6 @@ class AuthServiceController extends ChangeNotifier {
       }
       //EasyLoading.showSuccess('success');
     }
-
-    print(user);
     return user;
   }
 

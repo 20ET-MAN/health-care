@@ -49,7 +49,6 @@ class _BookingListAdminState extends State<BookingListAdmin> {
           future: futureBooking,
           builder: (context, snapShot) {
             if (snapShot.hasData) {
-              print(itemBookingList);
               return ListView.builder(
                 itemCount: itemBookingList?.length,
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -84,15 +83,16 @@ class _BookingListAdminState extends State<BookingListAdmin> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          itemBookingList![index].typeService,
+                                          itemBookingList?[index].typeService ??
+                                              '',
                                           style: AppStyle().heading2,
                                         ),
                                         Text(
-                                          'Họ tên: ${itemBookingList![index].fullName}',
+                                          'Họ tên: ${itemBookingList?[index].fullName ?? ''}',
                                           style: AppStyle().heading4,
                                         ),
                                         Text(
-                                            'Hẹn khám ngày: ${itemBookingList![index].bookingDate}'),
+                                            'Hẹn khám ngày: ${itemBookingList?[index].bookingDate ?? ''}'),
                                       ],
                                     ),
                                   ),
@@ -107,7 +107,7 @@ class _BookingListAdminState extends State<BookingListAdmin> {
                                               .withOpacity(0.4),
                                         ),
                                         const SizedBox(width: 10),
-                                        itemBookingList![index].bookingStatus ==
+                                        itemBookingList?[index].bookingStatus ==
                                                 0
                                             ? Text(
                                                 'Waiting...',

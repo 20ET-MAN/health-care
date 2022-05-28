@@ -9,7 +9,7 @@ class DoctorEntity {
   final String fullName;
   final String rank;
   final String sex;
-  final String uId;
+  final String dId;
   final int typeDoctor;
 
   DoctorEntity(
@@ -21,10 +21,10 @@ class DoctorEntity {
       required this.fullName,
       required this.rank,
       required this.sex,
-      required this.uId,
+      required this.dId,
       required this.typeDoctor});
 
-  factory DoctorEntity.fromSnapshot(DocumentSnapshot document) {
+/*  factory DoctorEntity.fromSnapshot(DocumentSnapshot document) {
     return DoctorEntity(
       dateOfBirth: document['dateOfBirth'],
       departments: document['departments'],
@@ -34,10 +34,10 @@ class DoctorEntity {
       fullName: document['fullName'],
       rank: document['rank'],
       sex: document['sex'],
-      uId: document['uId'],
+      dId: document['uId'],
       typeDoctor: document['typeDoctor'],
     );
-  }
+  }*/
   factory DoctorEntity.fromDocumentSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     return DoctorEntity(
@@ -49,7 +49,7 @@ class DoctorEntity {
       fullName: document['fullName'],
       rank: document['rank'],
       sex: document['sex'],
-      uId: document['uId'],
+      dId: document['uId'],
       typeDoctor: document['typeDoctor'],
     );
   }

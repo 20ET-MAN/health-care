@@ -11,10 +11,10 @@ class HomePageGridItem extends StatefulWidget {
 
   final List<ServiceItemEntity> item = [
     ServiceItemEntity(
-      'Test Covid',
-      'Đăng kí test covid tại nhà, tại bệnh viện',
+      'Số liệu Covid',
+      'Cập nhật số liệu Covid-19 nhanh và chính xác nhất',
       'assets/icon/ic_covid.png',
-      const NearHospitalRoute(),
+      const CovidDataPageRoute(),
     ),
     ServiceItemEntity(
       'Dịch vụ khám',
@@ -26,7 +26,7 @@ class HomePageGridItem extends StatefulWidget {
       'Bác sĩ',
       'Danh sách, thông tin chi tiết về các bác sĩ',
       'assets/icon/ic_doctor.png',
-      DoctorPageRoute(),
+      const DoctorPageRoute(),
     ),
     ServiceItemEntity(
       'Bệnh viện gần đây',

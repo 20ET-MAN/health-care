@@ -9,6 +9,8 @@ import 'package:healthcare/src/presentation/screens/home/home_page.dart';
 import 'package:healthcare/src/presentation/screens/home/home_screen.dart';
 import 'package:healthcare/src/presentation/screens/login_screen/login_page.dart';
 import 'package:healthcare/src/presentation/screens/map/near_hospital.dart';
+import 'package:healthcare/src/presentation/screens/message/chat_room.dart';
+import 'package:healthcare/src/presentation/screens/message/contact_list.dart';
 import 'package:healthcare/src/presentation/screens/news_page/new_detail.dart';
 import 'package:healthcare/src/presentation/screens/notification_screen/notification_page.dart';
 import 'package:healthcare/src/presentation/screens/profile_screen/profile_page.dart';
@@ -16,13 +18,14 @@ import 'package:healthcare/src/presentation/screens/profile_screen/user_profile_
 import 'package:healthcare/src/presentation/screens/register/create_user.dart';
 import 'package:healthcare/src/presentation/screens/register/register_first.dart';
 import 'package:healthcare/src/presentation/screens/splash_screen.dart';
-import 'package:healthcare/src/presentation/screens/web_view/service_page.dart';
+import 'package:healthcare/src/presentation/widget/service_page.dart';
 
 import '../screens/booking_screen/booking_list _user.dart';
 import '../screens/booking_screen/booking_list_detail_admin.dart';
 import '../screens/doctor/doctor_detail.dart';
+import '../screens/register/register_end.dart';
 import '../screens/web_view/covid_data_page.dart';
-import '../screens/web_view/help_center.dart';
+import '../widget/help_center.dart';
 
 @MaterialAutoRouter(
   //replaceInRouteName: 'Page,Route',
@@ -120,6 +123,18 @@ import '../screens/web_view/help_center.dart';
     AutoRoute(
       path: 'booking_user_page',
       page: BookingListUser,
+    ),
+    AutoRoute(
+      path: 'contact_list',
+      page: ContactList,
+    ),
+    AutoRoute(
+      path: 'chast_room',
+      page: ChatRoom,
+    ),
+    AutoRoute(
+      path: 'register_end',
+      page: RegisterEnd,
     ),
   ],
 )

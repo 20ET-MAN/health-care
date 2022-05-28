@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                               hint: 'Your email or phone',
                               textInputFormatter: [
                                 FilteringTextInputFormatter.deny(
-                                    RegExp(r'[/\\á-ú Á-Ú|] +-!?><"{}*%^&$#')),
+                                    RegExp(r'[/\á-ú Á-Ú|+{}*%^&$#_ ]')),
                               ],
                               controller: _emailController,
                             ),
@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                             AppTextField(
                               textInputFormatter: [
                                 FilteringTextInputFormatter.deny(
-                                    RegExp(r'[/\\á-ú Á-Ú|]')),
+                                    RegExp(r'[/\á-úÁ-Ú| ]')),
                               ],
                               controller: _passWordController,
                               hint: 'Password',

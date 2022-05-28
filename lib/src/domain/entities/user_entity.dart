@@ -9,12 +9,14 @@ class UserEntity {
   final String phoneNumber;
   final String dateOfBirth;
   final String creationDate;
+  final String image;
   final int userStatus;
 
   UserEntity({
     required this.fullName,
     required this.dateOfBirth,
     required this.phoneNumber,
+    required this.image,
     required this.userName,
     required this.sex,
     required this.typeUser,
@@ -22,25 +24,12 @@ class UserEntity {
     required this.userStatus,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) {
-    return UserEntity(
-      //uId: json['uId'],
-      typeUser: json['typeUser'],
-      fullName: json['displayName'],
-      userName: json['userName'],
-      sex: json['sex'],
-      dateOfBirth: json['dateOfBirth'],
-      phoneNumber: json['phoneNumber'],
-      creationDate: json['creationDate'],
-      userStatus: json['userStatus'],
-    );
-    //imageUrl: json['imageUrl']);
-  }
   factory UserEntity.fromDocument(DocumentSnapshot document) {
     return UserEntity(
       typeUser: document['typeUser'],
       fullName: document['fullName'],
       userName: document['userName'],
+      image: document['images'],
       sex: document['sex'],
       dateOfBirth: document['dateOfBirth'],
       phoneNumber: document['phoneNumber'],

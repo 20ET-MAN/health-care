@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/src/domain/entities/user_entity.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
-import 'package:healthcare/src/presentation/controller/booking_controller.dart';
 import 'package:healthcare/src/presentation/controller/use_controller.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 
@@ -26,14 +25,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<PageRouteInfo> _itemsUser = [
     const HomePageRoute(),
-    BookingPageRoute(),
+    const BookingPageRoute(),
     NotificationPageRoute(),
     const ProfilePageRoute()
   ];
 
   final List<PageRouteInfo> _itemsAdmin = [
     const HomePageRoute(),
-    BookingListAdminRoute(),
+    const BookingListAdminRoute(),
     NotificationPageRoute(),
     const ProfilePageRoute()
   ];
@@ -78,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          BookingController().getBooking();
+        onPressed: () async {
+          context.router.push(ContactListRoute());
         },
         backgroundColor: AppColor.colorOrange,
         child: const Icon(

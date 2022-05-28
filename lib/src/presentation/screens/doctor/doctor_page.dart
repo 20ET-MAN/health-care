@@ -64,7 +64,6 @@ class _DoctorPageState extends State<DoctorPage> {
                           onTap: () {
                             context.router.push(DoctorDetailRoute(
                                 doctorEntity: doctorList![index]));
-                            DoctorController().getDoctor();
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -82,13 +81,14 @@ class _DoctorPageState extends State<DoctorPage> {
                                   width: 80,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: doctorList![index]
-                                                .imageUrl
+                                        image: (doctorList?[index].imageUrl ??
+                                                    '')
                                                 .isEmpty
                                             ? const NetworkImage(
                                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9EXGE4pl-nm5WuxE6YJT2B3wFodTHkDD8dg&usqp=CAU')
                                             : NetworkImage(
-                                                doctorList![index].imageUrl),
+                                                doctorList?[index].imageUrl ??
+                                                    ''),
                                         fit: BoxFit.fill),
                                     color: AppColor.colorOrange,
                                     borderRadius: BorderRadius.circular(5),
@@ -102,12 +102,12 @@ class _DoctorPageState extends State<DoctorPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        doctorList![index].fullName,
+                                        doctorList?[index].fullName ?? '',
                                         style: AppStyle().heading2,
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                          'Chuyên khoa: ${doctorList![index].departments}',
+                                          'Chuyên khoa: ${doctorList?[index].departments ?? ''}',
                                           style: AppStyle().heading4),
                                       const SizedBox(height: 20),
                                     ],

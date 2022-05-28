@@ -13,7 +13,7 @@ class DoctorController {
     return doctorData;
   }
 
-  Future<void> doctorSetup(
+  Future<void> doctorCreate(
       {required String dateOfBirth,
       required String departments,
       required String description,

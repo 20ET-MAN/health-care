@@ -40,4 +40,11 @@ class AppStyle {
     fontWeight: FontWeight.w500,
     wordSpacing: 24 / 16,
   );
+  TextStyle heading6 = const TextStyle(
+    color: AppColor.colorGrey,
+    fontSize: 13,
+    fontFamily: StyleConfig.sfProFont,
+    fontWeight: FontWeight.w300,
+    wordSpacing: 24 / 16,
+  );
 }
