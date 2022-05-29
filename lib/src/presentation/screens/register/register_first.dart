@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -352,7 +353,7 @@ class _RegisterFirstState extends State<RegisterFirst> {
   Future<void> createUser() async {
     if (fullName.text.length < 8 || fullName.text.length > 32) {
       EasyLoading.showError('Họ Tên tài khoản phải có 8 -32 kí tự');
-    } else if (userName.text.length < 6 || userName.text.length > 32) {
+    } else if (userName.text.length < 4 || userName.text.length > 32) {
       EasyLoading.showError('Tên tài khoản phải có 4 -32 kí tự');
     } else if (dateOFBirth.text.isEmpty) {
       EasyLoading.showError('Vui lòng chọn ngày sinh');
@@ -373,7 +374,8 @@ class _RegisterFirstState extends State<RegisterFirst> {
             creationDate: DateTime.now().toString(),
             phoneNumber: phone.text.trim(),
             userStatus: 0,
-            images: '');
+            images: '',
+            uId: FirebaseAuth.instance.currentUser!.uid);
         EasyLoading.showSuccess('Đăng kí thành công',
             maskType: EasyLoadingMaskType.custom);
         context.router.replace(const RegisterEndRoute());

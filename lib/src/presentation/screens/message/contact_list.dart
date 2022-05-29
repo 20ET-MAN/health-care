@@ -1,19 +1,21 @@
+import 'dart:async';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:healthcare/src/domain/entities/user_entity.dart';
+import 'package:healthcare/src/presentation/config/app_color.dart';
+import 'package:healthcare/src/presentation/config/app_style.dart';
+import 'package:healthcare/src/presentation/route/routes.gr.dart';
+import 'package:provider/provider.dart';
 
-class ContactList extends StatefulWidget {
-  const ContactList({Key? key}) : super(key: key);
+import '../../controller/contact_list_controller.dart';
+import '../../utils/debouncer.dart';
+import '../../utils/firestore_constants.dart';
+import '../../utils/utilities.dart';
+import '../../widget/loading_view.dart';
 
-  @override
-  State<ContactList> createState() => _ContactListState();
-}
-
-class _ContactListState extends State<ContactList> {
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold();
-  }
-}
-/*
 class ContactList extends StatefulWidget {
   const ContactList({Key? key}) : super(key: key);
 
@@ -24,10 +26,6 @@ class ContactList extends StatefulWidget {
 class ContactListState extends State<ContactList> {
   ContactListState({Key? key});
 
-  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  final GoogleSignIn googleSignIn = GoogleSignIn();
   final ScrollController listScrollController = ScrollController();
 
   int _limit = 20;
@@ -36,23 +34,17 @@ class ContactListState extends State<ContactList> {
   bool isLoading = false;
 
   late String currentUserId;
-  late HomeProvider homeProvider;
+  late ContactListController contactListController;
   Debouncer searchDebouncer = Debouncer(milliseconds: 300);
   StreamController<bool> btnClearController = StreamController<bool>();
   TextEditingController searchBarTec = TextEditingController();
 
-  List<PopupChoices> choices = <PopupChoices>[
-    PopupChoices(title: 'Settings', icon: Icons.settings),
-    PopupChoices(title: 'Log out', icon: Icons.exit_to_app),
-  ];
-
   @override
   void initState() {
     super.initState();
-    homeProvider = context.read<HomeProvider>();
+    contactListController = context.read<ContactListController>();
 
-    registerNotification();
-    configLocalNotification();
+    currentUserId = FirebaseAuth.instance.currentUser!.uid;
     listScrollController.addListener(scrollListener);
   }
 
@@ -60,38 +52,6 @@ class ContactListState extends State<ContactList> {
   void dispose() {
     super.dispose();
     btnClearController.close();
-  }
-
-  void registerNotification() {
-    firebaseMessaging.requestPermission();
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('onMessage: $message');
-      if (message.notification != null) {
-        showNotification(message.notification!);
-      }
-      return;
-    });
-
-    firebaseMessaging.getToken().then((token) {
-      print('push token: $token');
-      if (token != null) {
-        homeProvider.updateDataFirestore(FirestoreConstants.pathUserCollection,
-            currentUserId, {'pushToken': token});
-      }
-    }).catchError((err) {
-      Fluttertoast.showToast(msg: err.message.toString());
-    });
-  }
-
-  void configLocalNotification() {
-    AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
-    IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings();
-    InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   void scrollListener() {
@@ -104,22 +64,22 @@ class ContactListState extends State<ContactList> {
     }
   }
 
-*/ /*  void onItemMenuPress(PopupChoices choice) {
+/*  void onItemMenuPress(PopupChoices choice) {
     if (choice.title == 'Log out') {
-      handleSignOut();
+      //handleSignOut();
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SettingsPage()));
     }
-  }*/ /*
+  }*/
 
-  void showNotification(RemoteNotification remoteNotification) async {
+  /* void showNotification(RemoteNotification remoteNotification) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       Platform.isAndroid
           ? 'com.dfa.flutterchatdemo'
           : 'com.duytq.flutterchatdemo',
       'Flutter chat demo',
-      'your channel description',
       playSound: true,
       enableVibration: true,
       importance: Importance.max,
@@ -131,8 +91,6 @@ class ContactListState extends State<ContactList> {
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
 
-    print(remoteNotification);
-
     await flutterLocalNotificationsPlugin.show(
       0,
       remoteNotification.title,
@@ -140,80 +98,77 @@ class ContactListState extends State<ContactList> {
       platformChannelSpecifics,
       payload: null,
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.appColorBg,
       appBar: AppBar(
-        title: const Text(
-          'AppConstants.homeTitle',
-          style: TextStyle(color: AppColor.colorGrey),
+        elevation: 1,
+        backgroundColor: AppColor.colorWhile,
+        title: Text(
+          'Danh sách liên hệ',
+          style: AppStyle().heading2,
         ),
         centerTitle: true,
-        actions: <Widget>[buildPopupMenu()],
       ),
-      body: WillPopScope(
-        child: Stack(
-          children: <Widget>[
-            // List
-            Column(
-              children: [
-                buildSearchBar(),
-                Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: homeProvider.getStreamFireStore(
-                        FirestoreConstants.pathUserCollection,
-                        _limit,
-                        _textSearch),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasData) {
-                        if ((snapshot.data?.docs.length ?? 0) > 0) {
-                          return ListView.builder(
-                            padding: EdgeInsets.all(10),
-                            itemBuilder: (context, index) =>
-                                buildItem(context, snapshot.data?.docs[index]),
-                            itemCount: snapshot.data?.docs.length,
-                            controller: listScrollController,
-                          );
-                        } else {
-                          return const Center(
-                            child: Text("No users"),
-                          );
-                        }
+      body: Stack(
+        children: <Widget>[
+          // List
+          Column(
+            children: [
+              buildSearchBar(),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: contactListController.getStreamFireStore(
+                      FirestoreConstants.pathUserCollection,
+                      _limit,
+                      _textSearch),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      if ((snapshot.data?.docs.length ?? 0) > 0) {
+                        return ListView.builder(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          itemBuilder: (context, index) =>
+                              buildItem(context, snapshot.data?.docs[index]),
+                          itemCount: snapshot.data?.docs.length,
+                          controller: listScrollController,
+                        );
                       } else {
                         return const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColor.colorBlackBlue,
-                          ),
+                          child: Text('No users'),
                         );
                       }
-                    },
-                  ),
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColor.colorOrange,
+                        ),
+                      );
+                    }
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
 
-            // Loading
-            Positioned(
-              child: isLoading ? LoadingView() : SizedBox.shrink(),
-            )
-          ],
-        ),
-        onWillPop: onBackPress,
+          // Loading
+          Positioned(
+            child: isLoading ? const LoadingView() : const SizedBox.shrink(),
+          )
+        ],
       ),
     );
   }
 
   Widget buildSearchBar() {
     return Container(
-      height: 40,
+      height: 50,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.search, color: AppColor.colorGrey, size: 20),
-          SizedBox(width: 5),
           Expanded(
             child: TextFormField(
               textInputAction: TextInputAction.search,
@@ -234,87 +189,70 @@ class ContactListState extends State<ContactList> {
                 });
               },
               decoration: InputDecoration.collapsed(
-                hintText: 'Search nickname (you have to type exactly string)',
-                hintStyle: TextStyle(fontSize: 13, color: AppColor.colorGrey),
+                hintText: 'Tìm kiếm bác sĩ',
+                hintStyle: TextStyle(
+                    fontSize: 13, color: AppColor.colorWhile.withOpacity(0.7)),
               ),
-              style: TextStyle(fontSize: 13),
+              style: AppStyle().heading3,
             ),
           ),
           StreamBuilder<bool>(
-              stream: btnClearController.stream,
-              builder: (context, snapshot) {
-                return snapshot.data == true
-                    ? GestureDetector(
-                        onTap: () {
-                          searchBarTec.clear();
-                          btnClearController.add(false);
-                          setState(() {
+            stream: btnClearController.stream,
+            builder: (context, snapshot) {
+              return snapshot.data == true
+                  ? GestureDetector(
+                      onTap: () {
+                        searchBarTec.clear();
+                        btnClearController.add(false);
+                        setState(
+                          () {
                             _textSearch = "";
-                          });
-                        },
-                        child: Icon(Icons.clear_rounded,
-                            color: AppColor.colorGrey, size: 20))
-                    : SizedBox.shrink();
-              }),
+                          },
+                        );
+                      },
+                      child: const Icon(Icons.clear_rounded,
+                          color: AppColor.colorGrey, size: 20))
+                  : const SizedBox.shrink();
+            },
+          ),
+          const SizedBox(width: 15),
+          const Icon(Icons.search, color: AppColor.colorOrange, size: 25),
         ],
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: AppColor.colorGrey,
+        borderRadius: BorderRadius.circular(10),
+        color: AppColor.colorBlackBlue,
       ),
-      padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-      margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      margin: const EdgeInsets.symmetric(vertical: 10),
     );
   }
 
-*/ /*  Widget buildPopupMenu() {
-    return PopupMenuButton<PopupChoices>(
-      onSelected: onItemMenuPress,
-      itemBuilder: (BuildContext context) {
-        return choices.map((PopupChoices choice) {
-          return PopupMenuItem<PopupChoices>(
-              value: choice,
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    choice.icon,
-                    color: ColorConstants.primaryColor,
-                  ),
-                  Container(
-                    width: 10,
-                  ),
-                  Text(
-                    choice.title,
-                    style: TextStyle(color: ColorConstants.primaryColor),
-                  ),
-                ],
-              ));
-        }).toList();
-      },
-    );
-  }*/ /*
-
   Widget buildItem(BuildContext context, DocumentSnapshot? document) {
     if (document != null) {
-      UserChat userChat = UserChat.fromDocument(document);
-      if (userChat.id == currentUserId) {
-        return SizedBox.shrink();
+      UserEntity userChat = UserEntity.fromDocument(document);
+      if (userChat.typeUser == 'admin') {
+        return const SizedBox.shrink();
       } else {
         return Container(
+          margin: const EdgeInsets.symmetric(vertical: 5),
           child: TextButton(
             child: Row(
-              children: <Widget>[
+              children: [
+                const SizedBox(
+                  width: 10,
+                ),
                 Material(
-                  child: userChat.photoUrl.isNotEmpty
+                  child: userChat.image.isNotEmpty
                       ? Image.network(
-                          userChat.photoUrl,
+                          userChat.image,
                           fit: BoxFit.cover,
                           width: 50,
                           height: 50,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) return child;
-                            return Container(
+                            return SizedBox(
                               width: 50,
                               height: 50,
                               child: Center(
@@ -342,7 +280,7 @@ class ContactListState extends State<ContactList> {
                           size: 50,
                           color: AppColor.colorGrey,
                         ),
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  borderRadius: const BorderRadius.all(Radius.circular(25)),
                   clipBehavior: Clip.hardEdge,
                 ),
                 Flexible(
@@ -351,25 +289,25 @@ class ContactListState extends State<ContactList> {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            'Nickname: ${userChat.nickname}',
+                            userChat.userName,
                             maxLines: 1,
-                            style: TextStyle(color: AppColor.colorOrange),
+                            style: AppStyle().heading2.copyWith(
+                                fontSize: 17, color: AppColor.colorOrange),
                           ),
                           alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.fromLTRB(10, 0, 0, 5),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                         ),
                         Container(
                           child: Text(
-                            'About me: ${userChat.aboutMe}',
+                            userChat.fullName,
                             maxLines: 1,
-                            style: TextStyle(color: AppColor.colorOrange),
+                            style: AppStyle().heading4,
                           ),
                           alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
                         )
                       ],
                     ),
-                    margin: EdgeInsets.only(left: 20),
+                    margin: const EdgeInsets.only(left: 20),
                   ),
                 ),
               ],
@@ -378,34 +316,22 @@ class ContactListState extends State<ContactList> {
               if (Utilities.isKeyboardShowing()) {
                 Utilities.closeKeyboard(context);
               }
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                    arguments: ChatPageArguments(
-                      peerId: userChat.id,
-                      peerAvatar: userChat.photoUrl,
-                      peerNickname: userChat.nickname,
-                    ),
-                  ),
-                ),
-              );
+              context.router.push(ChatRoomRoute(userEntity: userChat));
             },
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(ColorConstants.greyColor2),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  AppColor.colorGrey.withOpacity(0.2)),
               shape: MaterialStateProperty.all<OutlinedBorder>(
                 const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
               ),
             ),
           ),
-          margin: EdgeInsets.only(bottom: 10, left: 5, right: 5),
         );
       }
     } else {
       return const SizedBox.shrink();
     }
   }
-}*/
+}

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserEntity {
-  //final String uId;
+  final String uId;
   final String typeUser;
   final String fullName;
   final String userName;
@@ -13,6 +13,7 @@ class UserEntity {
   final int userStatus;
 
   UserEntity({
+    required this.uId,
     required this.fullName,
     required this.dateOfBirth,
     required this.phoneNumber,
@@ -24,8 +25,24 @@ class UserEntity {
     required this.userStatus,
   });
 
+  Map<String, String> toJson() {
+    return {
+      'uId': uId,
+      'typeUser': typeUser,
+      'fullName': fullName,
+      'userName': userName,
+      'images': image,
+      'sex': sex,
+      'dateOfBirth': dateOfBirth,
+      'phoneNumber': phoneNumber,
+      'creationDate': creationDate,
+      'userStatus': userStatus.toString(),
+    };
+  }
+
   factory UserEntity.fromDocument(DocumentSnapshot document) {
     return UserEntity(
+      uId: document['uId'],
       typeUser: document['typeUser'],
       fullName: document['fullName'],
       userName: document['userName'],

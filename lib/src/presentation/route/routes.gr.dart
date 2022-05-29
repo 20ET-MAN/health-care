@@ -137,8 +137,10 @@ class AppRouter extends _i27.RootStackRouter {
           routeData: routeData, child: const _i19.ContactList());
     },
     ChatRoomRoute.name: (routeData) {
+      final args = routeData.argsAs<ChatRoomRouteArgs>();
       return _i27.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i20.ChatRoom());
+          routeData: routeData,
+          child: _i20.ChatRoom(key: args.key, userEntity: args.userEntity));
     },
     RegisterEndRoute.name: (routeData) {
       return _i27.MaterialPageX<dynamic>(
@@ -437,10 +439,26 @@ class ContactListRoute extends _i27.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i20.ChatRoom]
-class ChatRoomRoute extends _i27.PageRouteInfo<void> {
-  const ChatRoomRoute() : super(ChatRoomRoute.name, path: 'chast_room');
+class ChatRoomRoute extends _i27.PageRouteInfo<ChatRoomRouteArgs> {
+  ChatRoomRoute({_i28.Key? key, required _i32.UserEntity userEntity})
+      : super(ChatRoomRoute.name,
+            path: 'chast_room',
+            args: ChatRoomRouteArgs(key: key, userEntity: userEntity));
 
   static const String name = 'ChatRoomRoute';
+}
+
+class ChatRoomRouteArgs {
+  const ChatRoomRouteArgs({this.key, required this.userEntity});
+
+  final _i28.Key? key;
+
+  final _i32.UserEntity userEntity;
+
+  @override
+  String toString() {
+    return 'ChatRoomRouteArgs{key: $key, userEntity: $userEntity}';
+  }
 }
 
 /// generated route for

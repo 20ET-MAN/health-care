@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../presentation/utils/firestore_constants.dart';
+
 class MessageEntity {
   final String userId;
   final String userName;
   final String roomId;
   final String message;
   final int messageType;
-  final DateTime createdAt;
+  final String createdAt;
 
   const MessageEntity({
     required this.userId,
@@ -15,21 +19,30 @@ class MessageEntity {
     required this.createdAt,
   });
 
-  static MessageEntity fromJson(Map<String, dynamic> json) => MessageEntity(
-        userId: json['userId'],
-        userName: json['userName'],
-        roomId: json['roomId'],
-        message: json['message'],
-        messageType: json['messageType'],
-        createdAt: json['createdAt']?.toDate(),
-      );
+  Map<String, dynamic> toJson() {
+    return {
+      FirestoreConstants.userId: userId,
+      FirestoreConstants.roomId: roomId,
+      FirestoreConstants.createdAt: createdAt,
+      FirestoreConstants.userName: userName,
+      FirestoreConstants.content: message,
+      FirestoreConstants.type: messageType,
+    };
+  }
 
-  Map<String, dynamic> toJson() => {
-        'userId': userId,
-        'userName': userName,
-        'roomId': roomId,
-        'message': message,
-        'messageType': messageType,
-        'createdAt': createdAt.toUtc(),
-      };
+  factory MessageEntity.fromDocument(DocumentSnapshot doc) {
+    String userId = doc.get(FirestoreConstants.userId);
+    String roomId = doc.get(FirestoreConstants.roomId);
+    String userName = doc.get(FirestoreConstants.userName);
+    String createdAt = doc.get(FirestoreConstants.createdAt);
+    String message = doc.get(FirestoreConstants.content);
+    int messageType = doc.get(FirestoreConstants.type);
+    return MessageEntity(
+        userId: userId,
+        userName: userName,
+        roomId: roomId,
+        message: message,
+        messageType: messageType,
+        createdAt: createdAt);
+  }
 }

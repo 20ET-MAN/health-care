@@ -7,6 +7,7 @@ class UserController {
   Future<void> userSetup(
       {required String fullName,
       required String typeUser,
+      required String uId,
       required String userName,
       required String sex,
       required String images,
@@ -19,6 +20,7 @@ class UserController {
         .collection('Users')
         .doc(auth.currentUser?.uid);
     users.set({
+      'uId': uId,
       'fullName': fullName,
       'userName': userName,
       'sex': sex,

@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_theme.dart';
 import 'package:healthcare/src/presentation/controller/auth_service_controller.dart';
+import 'package:healthcare/src/presentation/controller/contact_list_controller.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:healthcare/src/presentation/widget/custom_animation.dart';
 import 'package:provider/provider.dart';
@@ -21,10 +24,10 @@ void main() async {
   runApp(
     const App(),
   );
-  //configLocalNotification();
+  configLocalNotification();
 }
 
-/*final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 void configLocalNotification() {
   AndroidInitializationSettings initializationSettingsAndroid =
@@ -34,7 +37,7 @@ void configLocalNotification() {
   InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
-}*/
+}
 
 void configLoading() {
   EasyLoading.instance
@@ -59,7 +62,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const MyApp(),
+      home: MyApp(),
       supportedLocales: const [
         Locale("en"),
         Locale("vn"),
@@ -71,13 +74,17 @@ class App extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         Provider(create: (_) => AuthServiceController()),
+        Provider(
+            create: (_) =>
+                ContactListController(firebaseFirestore: firebaseFirestore)),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

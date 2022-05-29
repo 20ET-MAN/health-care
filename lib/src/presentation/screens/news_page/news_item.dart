@@ -66,7 +66,8 @@ class _NewsItemState extends State<NewsItem> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Image.network(
-                          newsList?[index].thumbnailTop ?? '',
+                          newsList?[index].thumbnailTop ??
+                              'https://w7.pngwing.com/pngs/748/607/png-transparent-news-media-newspaper-advertising-information-news-icon-text-orange-logo.png',
                           fit: BoxFit.fill,
                         ),
                       ),

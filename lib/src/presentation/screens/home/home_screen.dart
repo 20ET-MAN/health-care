@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          context.router.push(ContactListRoute());
+          context.router.push(const ContactListRoute());
         },
         backgroundColor: AppColor.colorOrange,
         child: const Icon(

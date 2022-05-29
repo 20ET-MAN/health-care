@@ -502,6 +502,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
             images: downloadURL ?? '',
             creationDate: DateFormat.yMd().format(DateTime.now()),
             phoneNumber: phone.text,
+            uId: FirebaseAuth.instance.currentUser!.uid,
             userStatus: 0);
         setState(() {});
         EasyLoading.showSuccess('Thêm thành công',
