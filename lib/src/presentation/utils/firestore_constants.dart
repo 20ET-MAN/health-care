@@ -1,6 +1,6 @@
 class FirestoreConstants {
   static const pathUserCollection = 'Users';
-  static const pathMessageCollection = 'messages';
+  static const pathMessageCollection = 'Messages';
   static const nickname = 'nickname';
   static const aboutMe = 'aboutMe';
   static const photoUrl = 'photoUrl';

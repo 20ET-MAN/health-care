@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -8,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_theme.dart';
 import 'package:healthcare/src/presentation/controller/auth_service_controller.dart';
+import 'package:healthcare/src/presentation/controller/chat_provider.dart';
 import 'package:healthcare/src/presentation/controller/contact_list_controller.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:healthcare/src/presentation/widget/custom_animation.dart';
@@ -24,7 +26,7 @@ void main() async {
   runApp(
     const App(),
   );
-  configLocalNotification();
+  //configLocalNotification();
 }
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -76,6 +78,7 @@ class App extends StatelessWidget {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +88,10 @@ class MyApp extends StatelessWidget {
         Provider(
             create: (_) =>
                 ContactListController(firebaseFirestore: firebaseFirestore)),
+        Provider(
+            create: (_) => ChatController(
+                firebaseFirestore: firebaseFirestore,
+                firebaseStorage: firebaseStorage)),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

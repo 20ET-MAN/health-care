@@ -4,13 +4,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:healthcare/src/domain/entities/message_entity.dart';
 import 'package:healthcare/src/domain/entities/user_entity.dart';
+import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/controller/chat_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/auth_provider.dart';
 import '../../utils/firestore_constants.dart';
+import '../../widget/loading_view.dart';
+import 'full_photo_page.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({Key? key, required this.userEntity}) : super(key: key);
@@ -37,14 +42,12 @@ class _ChatRoomState extends State<ChatRoom> {
   final ScrollController listScrollController = ScrollController();
   final FocusNode focusNode = FocusNode();
 
-  late ChatProvider chatProvider;
-  late AuthProvider authProvider;
+  late ChatController chatProvider;
 
   @override
   void initState() {
     super.initState();
-    chatProvider = context.read<ChatProvider>();
-    authProvider = context.read<AuthProvider>();
+    chatProvider = context.read<ChatController>();
 
     focusNode.addListener(onFocusChange);
     listScrollController.addListener(_scrollListener);
@@ -71,7 +74,7 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   void readLocal() {
-    if (authProvider.getUserFirebaseId()?.isNotEmpty == true) {
+    if (FirebaseAuth.instance.currentUser!.uid.isNotEmpty == true) {
       currentUserId = FirebaseAuth.instance.currentUser!.uid;
     }
     String peerId = widget.userEntity.uId;
@@ -126,70 +129,63 @@ class _ChatRoomState extends State<ChatRoom> {
       setState(() {
         isLoading = false;
       });
-
-      // Fluttertoast.showToast(msg: e.message ?? e.toString());
+      Fluttertoast.showToast(msg: e.message ?? e.toString());
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-
-/*  void onSendMessage(String content, int type) {
+  void onSendMessage(String content, int type) {
     if (content.trim().isNotEmpty) {
       textEditingController.clear();
       chatProvider.sendMessage(content, type, groupChatId,
           widget.userEntity.userName, currentUserId, currentUserId);
-      contactListController.sendMessage(
-          content, type, groupChatId, currentUserId, widget.arguments.peerId);
       listScrollController.animateTo(0,
           duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
     } else {
       Fluttertoast.showToast(
-          msg: 'Nothing to send', backgroundColor: ColorConstants.greyColor);
+          msg: 'Nothing to send', backgroundColor: AppColor.colorGrey);
     }
-  }*/
+  }
 
-/*
   Widget buildItem(int index, DocumentSnapshot? document) {
     if (document != null) {
-      MessageChat messageChat = MessageChat.fromDocument(document);
-      if (messageChat.idFrom == currentUserId) {
+      MessageEntity messageChat = MessageEntity.fromDocument(document);
+      if (messageChat.userId == currentUserId) {
         // Right (my message)
         return Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            messageChat.type == TypeMessage.text
+            messageChat.messageType == TypeMessage.text
                 // Text
-                ? Container(
-                    child: Text(
-                      messageChat.content,
-                      style:
-                          const TextStyle(color: ColorConstants.primaryColor),
+                ? Flexible(
+                    child: Container(
+                      child: Text(
+                        messageChat.message,
+                        style: const TextStyle(color: AppColor.colorBlackBlue),
+                      ),
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                      decoration: BoxDecoration(
+                          color: AppColor.colorGrey,
+                          borderRadius: BorderRadius.circular(8)),
+                      margin: EdgeInsets.only(
+                          bottom: isLastMessageRight(index) ? 20 : 10,
+                          right: 10,
+                          left: 100),
                     ),
-                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                    width: 200,
-                    decoration: BoxDecoration(
-                        color: ColorConstants.greyColor2,
-                        borderRadius: BorderRadius.circular(8)),
-                    margin: EdgeInsets.only(
-                        bottom: isLastMessageRight(index) ? 20 : 10, right: 10),
                   )
-                : messageChat.type == TypeMessage.image
+                : messageChat.messageType == TypeMessage.image
                     // Image
                     ? Container(
                         child: OutlinedButton(
                           child: Material(
                             child: Image.network(
-                              messageChat.content,
+                              messageChat.message,
                               loadingBuilder: (BuildContext context,
                                   Widget child,
                                   ImageChunkEvent? loadingProgress) {
                                 if (loadingProgress == null) return child;
                                 return Container(
                                   decoration: const BoxDecoration(
-                                    color: ColorConstants.greyColor2,
+                                    color: AppColor.colorGrey,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(8),
                                     ),
@@ -198,7 +194,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                   height: 200,
                                   child: Center(
                                     child: CircularProgressIndicator(
-                                      color: ColorConstants.themeColor,
+                                      color: AppColor.colorOrange,
                                       value:
                                           loadingProgress.expectedTotalBytes !=
                                                   null
@@ -238,7 +234,7 @@ class _ChatRoomState extends State<ChatRoom> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => FullPhotoPage(
-                                  url: messageChat.content,
+                                  url: messageChat.message,
                                 ),
                               ),
                             );
@@ -254,7 +250,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     // Sticker
                     : Container(
                         child: Image.asset(
-                          'images/${messageChat.content}.gif',
+                          'images/${messageChat.message}.gif',
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,
@@ -272,17 +268,18 @@ class _ChatRoomState extends State<ChatRoom> {
           child: Column(
             children: <Widget>[
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   isLastMessageLeft(index)
                       ? Material(
                           child: Image.network(
-                            widget.arguments.peerAvatar,
+                            widget.userEntity.image,
                             loadingBuilder: (BuildContext context, Widget child,
                                 ImageChunkEvent? loadingProgress) {
                               if (loadingProgress == null) return child;
                               return Center(
                                 child: CircularProgressIndicator(
-                                  color: ColorConstants.themeColor,
+                                  color: AppColor.colorOrange,
                                   value: loadingProgress.expectedTotalBytes !=
                                           null
                                       ? loadingProgress.cumulativeBytesLoaded /
@@ -295,7 +292,7 @@ class _ChatRoomState extends State<ChatRoom> {
                               return const Icon(
                                 Icons.account_circle,
                                 size: 35,
-                                color: ColorConstants.greyColor,
+                                color: AppColor.colorGrey,
                               );
                             },
                             width: 35,
@@ -308,94 +305,99 @@ class _ChatRoomState extends State<ChatRoom> {
                           clipBehavior: Clip.hardEdge,
                         )
                       : Container(width: 35),
-                  messageChat.type == TypeMessage.text
-                      ? Container(
-                          child: Text(
-                            messageChat.content,
-                            style: const TextStyle(color: Colors.white),
+                  messageChat.messageType == TypeMessage.text
+                      ? Flexible(
+                          child: Container(
+                            child: Text(
+                              messageChat.message,
+                              style: const TextStyle(
+                                  color: AppColor.colorBlackBlue),
+                            ),
+                            padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                            decoration: BoxDecoration(
+                                color: AppColor.colorOrange,
+                                borderRadius: BorderRadius.circular(8)),
+                            margin: const EdgeInsets.only(left: 10, right: 100),
                           ),
-                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                          width: 200,
-                          decoration: BoxDecoration(
-                              color: ColorConstants.primaryColor,
-                              borderRadius: BorderRadius.circular(8)),
-                          margin: const EdgeInsets.only(left: 10),
                         )
-                      : messageChat.type == TypeMessage.image
-                          ? Container(
-                              child: TextButton(
-                                child: Material(
-                                  child: Image.network(
-                                    messageChat.content,
-                                    loadingBuilder: (BuildContext context,
-                                        Widget child,
-                                        ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Container(
-                                        decoration: const BoxDecoration(
-                                          color: ColorConstants.greyColor2,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(8),
+                      : messageChat.messageType == TypeMessage.image
+                          ? Flexible(
+                              child: Container(
+                                child: TextButton(
+                                  child: Material(
+                                    child: Image.network(
+                                      messageChat.message,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Container(
+                                          decoration: const BoxDecoration(
+                                            color: AppColor.colorGrey,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8),
+                                            ),
                                           ),
-                                        ),
-                                        width: 200,
-                                        height: 200,
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            color: ColorConstants.themeColor,
-                                            value: loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null
-                                                ? loadingProgress
-                                                        .cumulativeBytesLoaded /
-                                                    loadingProgress
-                                                        .expectedTotalBytes!
-                                                : null,
+                                          width: 200,
+                                          height: 200,
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: AppColor.colorOrange,
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
                                           ),
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, object, stackTrace) =>
+                                              Material(
+                                        child: Image.asset(
+                                          'images/img_not_available.jpeg',
+                                          width: 200,
+                                          height: 200,
+                                          fit: BoxFit.cover,
                                         ),
-                                      );
-                                    },
-                                    errorBuilder:
-                                        (context, object, stackTrace) =>
-                                            Material(
-                                      child: Image.asset(
-                                        'images/img_not_available.jpeg',
-                                        width: 200,
-                                        height: 200,
-                                        fit: BoxFit.cover,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(8),
+                                        ),
+                                        clipBehavior: Clip.hardEdge,
                                       ),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(8),
-                                      ),
-                                      clipBehavior: Clip.hardEdge,
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.cover,
                                     ),
-                                    width: 200,
-                                    height: 200,
-                                    fit: BoxFit.cover,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(8)),
+                                    clipBehavior: Clip.hardEdge,
                                   ),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(8)),
-                                  clipBehavior: Clip.hardEdge,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FullPhotoPage(
+                                            url: messageChat.message),
+                                      ),
+                                    );
+                                  },
+                                  style: ButtonStyle(
+                                      padding:
+                                          MaterialStateProperty.all<EdgeInsets>(
+                                              const EdgeInsets.all(0))),
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FullPhotoPage(
-                                          url: messageChat.content),
-                                    ),
-                                  );
-                                },
-                                style: ButtonStyle(
-                                    padding:
-                                        MaterialStateProperty.all<EdgeInsets>(
-                                            const EdgeInsets.all(0))),
+                                margin: const EdgeInsets.only(left: 10),
                               ),
-                              margin: const EdgeInsets.only(left: 10),
                             )
                           : Container(
                               child: Image.asset(
-                                'images/${messageChat.content}.gif',
+                                'images/${messageChat.message}.gif',
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -413,9 +415,9 @@ class _ChatRoomState extends State<ChatRoom> {
                       child: Text(
                         DateFormat('dd MMM kk:mm').format(
                             DateTime.fromMillisecondsSinceEpoch(
-                                int.parse(messageChat.timestamp))),
+                                int.parse(messageChat.createdAt))),
                         style: const TextStyle(
-                            color: ColorConstants.greyColor,
+                            color: AppColor.colorGrey,
                             fontSize: 12,
                             fontStyle: FontStyle.italic),
                       ),
@@ -436,7 +438,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   bool isLastMessageLeft(int index) {
     if ((index > 0 &&
-            listMessage[index - 1].get(FirestoreConstants.idFrom) ==
+            listMessage[index - 1].get(FirestoreConstants.userId) ==
                 currentUserId) ||
         index == 0) {
       return true;
@@ -447,7 +449,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   bool isLastMessageRight(int index) {
     if ((index > 0 &&
-            listMessage[index - 1].get(FirestoreConstants.idFrom) !=
+            listMessage[index - 1].get(FirestoreConstants.userId) !=
                 currentUserId) ||
         index == 0) {
       return true;
@@ -462,10 +464,10 @@ class _ChatRoomState extends State<ChatRoom> {
         isShowSticker = false;
       });
     } else {
-      contactListController.updateDataFirestore(
+      chatProvider.updateDataFirestore(
         FirestoreConstants.pathUserCollection,
         currentUserId,
-        {FirestoreConstants.chattingWith: null},
+        {FirestoreConstants.chattingWith: ''},
       );
       Navigator.pop(context);
     }
@@ -477,9 +479,11 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColor.colorWhile,
+        elevation: 1,
         title: Text(
-          widget.arguments.peerNickname,
-          style: const TextStyle(color: ColorConstants.primaryColor),
+          widget.userEntity.userName,
+          style: const TextStyle(color: AppColor.colorBlackBlue),
         ),
         centerTitle: true,
       ),
@@ -521,7 +525,7 @@ class _ChatRoomState extends State<ChatRoom> {
               child: IconButton(
                 icon: const Icon(Icons.image),
                 onPressed: getImage,
-                color: ColorConstants.primaryColor,
+                color: AppColor.colorOrange,
               ),
             ),
             color: Colors.white,
@@ -532,7 +536,7 @@ class _ChatRoomState extends State<ChatRoom> {
               child: IconButton(
                 icon: const Icon(Icons.face),
                 onPressed: getSticker,
-                color: ColorConstants.primaryColor,
+                color: AppColor.colorOrange,
               ),
             ),
             color: Colors.white,
@@ -544,12 +548,11 @@ class _ChatRoomState extends State<ChatRoom> {
               onSubmitted: (value) {
                 onSendMessage(textEditingController.text, TypeMessage.text);
               },
-              style: const TextStyle(
-                  color: ColorConstants.primaryColor, fontSize: 15),
+              style: const TextStyle(color: AppColor.colorOrange, fontSize: 15),
               controller: textEditingController,
               decoration: const InputDecoration.collapsed(
                 hintText: 'Type your message...',
-                hintStyle: TextStyle(color: ColorConstants.greyColor),
+                hintStyle: TextStyle(color: AppColor.colorGrey),
               ),
               focusNode: focusNode,
             ),
@@ -561,9 +564,11 @@ class _ChatRoomState extends State<ChatRoom> {
               margin: const EdgeInsets.symmetric(horizontal: 8),
               child: IconButton(
                 icon: const Icon(Icons.send),
-                onPressed: () =>
-                    onSendMessage(textEditingController.text, TypeMessage.text),
-                color: ColorConstants.primaryColor,
+                onPressed: textEditingController.text.isEmpty
+                    ? () => onSendMessage(
+                        textEditingController.text, TypeMessage.text)
+                    : () {},
+                color: AppColor.colorOrange,
               ),
             ),
             color: Colors.white,
@@ -573,8 +578,8 @@ class _ChatRoomState extends State<ChatRoom> {
       width: double.infinity,
       height: 50,
       decoration: const BoxDecoration(
-          border: Border(
-              top: BorderSide(color: ColorConstants.greyColor2, width: 0.5)),
+          border:
+              Border(top: BorderSide(color: AppColor.colorOrange, width: 0.5)),
           color: Colors.white),
     );
   }
@@ -583,7 +588,7 @@ class _ChatRoomState extends State<ChatRoom> {
     return Flexible(
       child: groupChatId.isNotEmpty
           ? StreamBuilder<QuerySnapshot>(
-              stream: contactListController.getChatStream(groupChatId, _limit),
+              stream: chatProvider.getChatStream(groupChatId, _limit),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
@@ -603,7 +608,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 } else {
                   return const Center(
                     child: CircularProgressIndicator(
-                      color: ColorConstants.themeColor,
+                      color: AppColor.colorOrange,
                     ),
                   );
                 }
@@ -611,11 +616,9 @@ class _ChatRoomState extends State<ChatRoom> {
             )
           : const Center(
               child: CircularProgressIndicator(
-                color: ColorConstants.themeColor,
+                color: AppColor.colorOrange,
               ),
             ),
     );
   }
-}
-*/
 }

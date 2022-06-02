@@ -1,20 +1,23 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthcare/src/domain/entities/user_entity.dart';
 import 'package:healthcare/src/presentation/config/app_color.dart';
 import 'package:healthcare/src/presentation/config/app_style.dart';
 import 'package:healthcare/src/presentation/route/routes.gr.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../main.dart';
 import '../../controller/contact_list_controller.dart';
 import '../../utils/debouncer.dart';
 import '../../utils/firestore_constants.dart';
 import '../../utils/utilities.dart';
-import '../../widget/loading_view.dart';
 
 class ContactList extends StatefulWidget {
   const ContactList({Key? key}) : super(key: key);
@@ -73,13 +76,11 @@ class ContactListState extends State<ContactList> {
     }
   }*/
 
-  /* void showNotification(RemoteNotification remoteNotification) async {
+  void showNotification(RemoteNotification remoteNotification) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      Platform.isAndroid
-          ? 'com.dfa.flutterchatdemo'
-          : 'com.duytq.flutterchatdemo',
-      'Flutter chat demo',
+      Platform.isAndroid ? 'com.example.healthcare' : 'com.example.healthcare',
+      'Health Care Message',
       playSound: true,
       enableVibration: true,
       importance: Importance.max,
@@ -98,7 +99,7 @@ class ContactListState extends State<ContactList> {
       platformChannelSpecifics,
       payload: null,
     );
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,9 +156,9 @@ class ContactListState extends State<ContactList> {
           ),
 
           // Loading
-          Positioned(
+          /*Positioned(
             child: isLoading ? const LoadingView() : const SizedBox.shrink(),
-          )
+          )*/
         ],
       ),
     );
@@ -231,7 +232,7 @@ class ContactListState extends State<ContactList> {
   Widget buildItem(BuildContext context, DocumentSnapshot? document) {
     if (document != null) {
       UserEntity userChat = UserEntity.fromDocument(document);
-      if (userChat.typeUser == 'admin') {
+      if (userChat.uId == currentUserId) {
         return const SizedBox.shrink();
       } else {
         return Container(
