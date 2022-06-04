@@ -67,15 +67,6 @@ class ContactListState extends State<ContactList> {
     }
   }
 
-/*  void onItemMenuPress(PopupChoices choice) {
-    if (choice.title == 'Log out') {
-      //handleSignOut();
-    } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SettingsPage()));
-    }
-  }*/
-
   void showNotification(RemoteNotification remoteNotification) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
@@ -154,11 +145,6 @@ class ContactListState extends State<ContactList> {
               ),
             ],
           ),
-
-          // Loading
-          /*Positioned(
-            child: isLoading ? const LoadingView() : const SizedBox.shrink(),
-          )*/
         ],
       ),
     );
@@ -175,19 +161,21 @@ class ContactListState extends State<ContactList> {
               textInputAction: TextInputAction.search,
               controller: searchBarTec,
               onChanged: (value) {
-                searchDebouncer.run(() {
-                  if (value.isNotEmpty) {
-                    btnClearController.add(true);
-                    setState(() {
-                      _textSearch = value;
-                    });
-                  } else {
-                    btnClearController.add(false);
-                    setState(() {
-                      _textSearch = "";
-                    });
-                  }
-                });
+                searchDebouncer.run(
+                  () {
+                    if (value.isNotEmpty) {
+                      btnClearController.add(true);
+                      setState(() {
+                        _textSearch = value;
+                      });
+                    } else {
+                      btnClearController.add(false);
+                      setState(() {
+                        _textSearch = "";
+                      });
+                    }
+                  },
+                );
               },
               decoration: InputDecoration.collapsed(
                 hintText: 'Tìm kiếm bác sĩ',
@@ -224,7 +212,7 @@ class ContactListState extends State<ContactList> {
         borderRadius: BorderRadius.circular(10),
         color: AppColor.colorBlackBlue,
       ),
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
       margin: const EdgeInsets.symmetric(vertical: 10),
     );
   }
