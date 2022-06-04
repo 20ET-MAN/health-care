@@ -212,7 +212,7 @@ class ContactListState extends State<ContactList> {
         borderRadius: BorderRadius.circular(10),
         color: AppColor.colorBlackBlue,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       margin: const EdgeInsets.symmetric(vertical: 10),
     );
   }
